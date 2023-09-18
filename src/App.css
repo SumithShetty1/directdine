@@ -1,38 +1,89 @@
-.App {
-  text-align: center;
+* {
+  font-family: Arial, Helvetica, sans-serif;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+/* Layout */
+.container {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  grid-template-rows: auto;
+  column-gap: 20px;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+/* Header */
+header {
+  background-color: white;
+  grid-column: 1 / span 12;
   display: flex;
-  flex-direction: column;
+  gap: 50px;
+  height: 64px;
+  padding-left: 200px;
+  padding-right: 200px;
   align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  /* position: fixed;
+  top: 0;
+  right: 0;
+  left: 0;
+  z-index: 1030; */
 }
 
-.App-link {
-  color: #61dafb;
+header > img {
+  height: 60px;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+/* Header Inputs */
+.header-input {
+  display: flex;
+  gap: 0px;
+  width: 50%;
+}
+
+/* Location Dropdown */
+.location-dropdown {
+  height: 34.4px;
+  padding-left: 35px;
+  border: 1px solid lightgray;
+  outline: 0;
+  background: url("./assets/images/location-icon.png") no-repeat;
+  background-size: 20px;
+  background-position: 5px center;
+}
+
+/* Search */
+.search-input {
+  width: 100%;
+  height: 38px;
+  border: 1px solid lightgray;
+  outline: 0;
+  padding-left: 10px;
+  margin-left: 10px;
+}
+
+/* Search Button */
+.search-btn {
+  font-weight: bold;
+}
+
+/* Nav */
+nav ul {
+  list-style: none;
+  padding-left: 11px;
+}
+
+nav li {
+  display: inline-block;
+}
+
+nav a {
+  color: black;
+  text-decoration: none;
+  font-weight: bold;
+  margin-left: 45px;
+}
+
+/* Login Button */
+.login-btn {
+  width: 53.375px;
+  height: 32.8px;
+  font-weight: bold;
 }
