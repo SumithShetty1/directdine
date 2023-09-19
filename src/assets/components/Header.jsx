@@ -1,28 +1,46 @@
 import React, { useState } from "react";
+import { Link } from 'react-router-dom';
 import logo from "../images/Logo.svg";
+import searchicon from "../images/search-icon.png";
+import "../styles/Header.css"
 
 function Header() {
   const [selectedLocation, setSelectedLocation] = useState("");
+  const [locationSuggestions, setLocationSuggestions] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [suggestions, setSuggestions] = useState([]);
 
-  const handleLocationChange = (e) => {
-    setSelectedLocation(e.target.value);
+  // Function to get location suggestions based on location query
+  const getLocationSuggestions = (query) => {
+   const locationSuggestions = ["Moodbidri", "Mangalore", "Bantwal"];
+   return locationSuggestions.filter((location) =>
+     location.toLowerCase().includes(query.toLowerCase())
+   );
   };
+
+  const handleLocationQueryChange = (e) => {
+    const query = e.target.value;
+    setSelectedLocation(query);
+
+    // Filtering and setting location suggestions based on the query
+    const filteredLocationSuggestions = getLocationSuggestions(query);
+    setLocationSuggestions(filteredLocationSuggestions);
+  };
+
 
   const handleSearchQueryChange = (e) => {
     const query = e.target.value;
     setSearchQuery(query);
 
-    // Filtering and seting suggestions based on the search query
+    // Filtering and setting suggestions based on the search query
     const filteredSuggestions = getSuggestions(query);
     setSuggestions(filteredSuggestions);
   };
 
-  // Mock function to get suggestions based on search query
+  // Function to get suggestions based on search query
   const getSuggestions = (query) => {
     // We can implement our logic here to fetch or filter suggestions based on the query
-    const suggestions = ["Suggestion1", "Suggestion2", "Suggestion3"]; // Replace with your data
+    const suggestions = ["Charcoals", "Grand Palace", "Dominos"];
     return suggestions.filter((suggestion) =>
       suggestion.toLowerCase().includes(query.toLowerCase())
     );
@@ -36,14 +54,14 @@ function Header() {
           type="text"
           list="locations"
           value={selectedLocation}
-          onChange={handleLocationChange}
-          className="location-dropdown"
+          onChange={handleLocationQueryChange}
+          className="location-input"
           placeholder="Type your location"
         />
         <datalist id="locations">
-          <option value="Moodbidri" />
-          <option value="Mangalore" />
-          <option value="Bantwal" />
+          {locationSuggestions.map((location, index) => (
+            <option key={index} value={location} />
+          ))}
         </datalist>
         <input
           type="text"
@@ -60,7 +78,10 @@ function Header() {
             ))}
           </datalist>
         )}
-        <button className="search-btn">Search</button>
+        <button className="search-btn">
+          <img src={searchicon} className="search-icon" />
+          Search
+        </button>
       </div>
       <nav>
         <ul>
@@ -71,8 +92,8 @@ function Header() {
             <a href="#">Contact</a>
           </li>
         </ul>
+        <button className="login-btn">Login</button>
       </nav>
-      <button className="login-btn">Login</button>
     </header>
   );
 }

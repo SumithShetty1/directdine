@@ -1,0 +1,18 @@
+footer {
+    grid-column: 1/ span 12;
+    height: 70px;
+    margin-top: 100px;
+    padding-left: 100px;
+    padding-right: 100px;
+}
+
+.fcontainer {
+    display: flex;
+    gap: 68%;
+    align-items: center;
+}
+
+.social a {
+    margin-left: 16px;
+    align-items: center;
+}
