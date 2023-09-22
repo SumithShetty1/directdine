@@ -3,7 +3,7 @@ function Hero() {
     <main>
         <section className="hero">
             <article>
-                
+              
             </article>
         </section>
     </main>

@@ -1,12 +1,15 @@
-import React from 'react'
+import React from 'react';
+import '../styles/Home.css';
 import Hero from '../components/Hero';
+import Recommend from '../components/Recommend';
 
-function Home() {
+function Home({ selectedLocation }) {
   return (
     <main>
-        <Hero/>
+      <Hero/>
+      <Recommend selectedLocation={selectedLocation} />
     </main>
-  )
+  );
 }
 
-export default Home
+export default Home;
