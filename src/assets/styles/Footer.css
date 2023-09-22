@@ -8,11 +8,15 @@ footer {
 
 .fcontainer {
     display: flex;
-    gap: 68%;
+    gap: 70%;
     align-items: center;
 }
 
+.social {
+    margin-left: 25px;
+}
+
 .social a {
-    margin-left: 16px;
+    margin-left: 12px;
     align-items: center;
 }

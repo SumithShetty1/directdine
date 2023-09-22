@@ -2,6 +2,10 @@
   font-family: Arial, Helvetica, sans-serif;
 }
 
+body {
+  background-color: #eee;
+}
+
 /* Layout */
 .container {
   display: grid;

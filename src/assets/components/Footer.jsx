@@ -17,9 +17,6 @@ export default function Footer(){
                     <a href="https://instagram.com" target="_blank" rel="noopener noreferrer">
                         <img src={instagram} alt='Instagram' width={30} height={30} />
                     </a>
-                    <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer">
-                        <img src={linkedin} alt='Linkedin' width={30} height={30} />
-                    </a>
                 </span>
             </div>
         </footer>
