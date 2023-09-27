@@ -6,12 +6,14 @@ import Footer from './assets/components/Footer';
 import Home from './assets/pages/Home';
 
 function App() {
-  const [selectedLocation, setSelectedLocation] = useState('Mangalore');
+  const [selectedLocation, setSelectedLocation] = useState('Moodbidri');
 
   return (
     <div className='container'>
       <Header selectedLocation={selectedLocation} setSelectedLocation={setSelectedLocation} />
-      <Home selectedLocation={selectedLocation} />
+      <Routes>
+        <Route path="/" element={<Home selectedLocation={selectedLocation} />} />
+      </Routes>
       <Footer/>
     </div>
   );

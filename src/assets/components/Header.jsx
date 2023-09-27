@@ -64,7 +64,9 @@ function Header({ selectedLocation, setSelectedLocation }) {
 
   return (
     <header>
-      <img src={logo} alt="logo" />
+      <Link to="/">
+        <img src={logo} alt="logo" />
+      </Link>
       <div className="header-input">
         <input
           type="text"

@@ -1,13 +1,17 @@
 import React from 'react';
 import '../styles/Home.css';
-import Hero from '../components/Hero';
-import Recommend from '../components/Recommend';
+import Recommend from '../components/Home/Recommend';
+import Added from '../components/Home/Added';
+import AllRestaurants from '../components/Home/AllRestaurants'
+import About from '../components/Home/About';
 
 function Home({ selectedLocation }) {
   return (
     <main>
-      <Hero/>
       <Recommend selectedLocation={selectedLocation} />
+      <Added selectedLocation={selectedLocation} />
+      <AllRestaurants/>
+      <About/>
     </main>
   );
 }

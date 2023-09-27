@@ -5,17 +5,17 @@ header {
     display: flex;
     gap: 50px;
     height: 70px;
-    padding-left: 100px;
-    padding-right: 100px;
+    padding-left: 60px;
+    padding-right: 60px;
     align-items: center;
-    /* position: fixed;
+    position: fixed;
     top: 0;
     right: 0;
     left: 0;
-    z-index: 1030; */
+    z-index: 1030;
   }
 
-  header > img {
+  header img {
     width: 170px;
     height: 70px;
   }
@@ -29,7 +29,7 @@ header {
 
   /* Location Dropdown */
   .location-input {
-    width: 50%;
+    width: 30%;
     height: 38px;
     padding-left: 35px;
     border: 1px solid lightgray;
@@ -42,14 +42,14 @@ header {
 
   /* Search */
   .search-input {
-    width: 100%;
+    width: 60%;
     height: 38px;
     border: 1px solid lightgray;
     border-right: none;
     border-radius: 4px 0px 0px 4px;
     outline: 0;
     padding-left: 10px;
-    margin-left: 8px;
+    margin-left: 10px;
   }
 
   /* Used to remove the down arrow from search-input */
@@ -63,11 +63,13 @@ header {
     gap: 3px;
     align-items: center;
     color: white;
+    font-size: 16px;
     font-weight: bold;
     border: none;
     border-radius: 0px 4px 4px 0px;
     background-color: #f4c824;
     cursor: pointer;
+    padding: 8px;
   }
 
   .search-btn:hover {
@@ -90,9 +92,11 @@ header {
   }
 
   nav ul {
+    width: 70%;
     list-style: none;
     padding-left: 0px;
-    margin-left: 0.6em;
+    text-align: right;
+    font-size: 18px;
   }
 
   nav li {
@@ -118,6 +122,7 @@ header {
     height: 40px;
     color: white;
     background: #f4c824;
+    font-size: 16px;
     font-weight: bold;
     border: none;
     border-radius: 4px;
