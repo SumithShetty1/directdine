@@ -14,7 +14,7 @@ function Added({ selectedLocation }) {
         <section className='new-added'>
             <div className='recommend-header'>
                 <h1>Newly added restaurants in {selectedLocation}</h1>
-                <Link to="">See All</Link>
+                <Link to="/restaurants">See All</Link>
             </div>
             <div className='recommend-container'>
                 {restaurantData.map((restaurant, index) => (

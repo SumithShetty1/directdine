@@ -1,8 +1,9 @@
 footer {
+    grid-row: 3;
     grid-column: 1/ span 12;
     margin-top: 50px;
-    padding-left: 100px;
-    padding-right: 100px;
+    padding-left: 60px;
+    padding-right: 60px;
     color: white;
     background-color: black;
 }

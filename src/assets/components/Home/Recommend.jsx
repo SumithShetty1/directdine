@@ -14,7 +14,7 @@ function Recommend({ selectedLocation }) {
         <section className='recommend'>
             <div className='recommend-header'>
                 <h1>Recommended restaurants in {selectedLocation}</h1>
-                <Link to="">See All</Link>
+                <Link to="/restaurants">See All</Link>
             </div>
             <div className='recommend-container'>
                 {restaurantData.map((restaurant, index) => (

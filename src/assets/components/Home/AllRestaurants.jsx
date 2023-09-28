@@ -14,7 +14,7 @@ function AllRestaurants() {
         <section className='all-restaurants'>
             <div className='recommend-header'>
                 <h1>Restaurants</h1>
-                <Link to="">See All</Link>
+                <Link to="/restaurants">See All</Link>
             </div>
             <div className='recommend-container'>
                 {restaurantData.map((restaurant, index) => (
