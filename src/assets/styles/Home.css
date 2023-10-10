@@ -3,8 +3,8 @@ main {
     grid-row: 2;
     grid-column: 1 / span 12;
     margin: 5em 0 0 0;
-    padding-left: 280px;
-    padding-right: 280px;
+    padding-left: 220px;
+    padding-right: 220px;
 }
 
 /* Recommend */
@@ -44,12 +44,12 @@ main {
     background-color: white;
     border-radius: 5px;
     cursor: pointer;
+    box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.3);
 }
 
 .restaurant:hover {
     transform: scale(1.1); /* Increase the size by 10% when hovered */
     transition: transform 0.3s ease; /* Add a smooth transition effect */
-    box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.3);
 }
 
 .restaurant img {
@@ -78,7 +78,6 @@ main {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    max-width: 100%;
 }
 
 
