@@ -1,29 +1,23 @@
-/* Main */
-main {
-    grid-row: 2;
-    grid-column: 1 / span 12;
-    margin: 5em 0 0 0;
-    padding-left: 220px;
-    padding-right: 220px;
+/* Home */
+.homepage {
+    max-width: 70%;
 }
 
 /* Recommend */
 .recommend-header {
-    width: 100%;
-    display: flex;
+    max-width: 100%;
 }
 
 .recommend-header h1 {
-    width: 90%;
+    display: inline-block;
 }
 
 .recommend-header a {
-    width: 10%;
     color: grey;
     font-size: 18px;
     text-decoration: none;
     margin: 24px 0px;
-    text-align: right;
+    float: right;
 }
 
 .recommend-header a:hover {
@@ -32,7 +26,8 @@ main {
 
 .recommend-container {
     display: flex;
-    gap: 26px;
+    gap: 21px;
+    max-width: 100%;
 }
 
 .restaurant {

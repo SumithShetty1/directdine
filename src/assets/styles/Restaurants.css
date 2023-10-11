@@ -1,11 +1,15 @@
+/* Restaurants */
+.restaurantspage {
+    max-width: 100%;
+}
+
 /* Recommended */
 .recommended-header {
     width: 100%;
-    display: flex;
 }
 
 .recommended-header h1 {
-    width: 90%;
+    display: inline-block;
 }
 
 .restaurant-lists {
@@ -63,6 +67,7 @@
     margin: 20px 0;
     color: black;
     text-decoration: none;
+    padding: 0 5px;
 }
 
 .restaurant-details img {
@@ -70,3 +75,21 @@
     height: 20px;
 }
 
+/* Book a Table Button */
+.booktable-btn {
+    width: 15%;
+    height: 40px;
+    color: white;
+    background: #f4c824;
+    font-size: 16px;
+    font-weight: bold;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin: auto 0;
+}
+
+.booktable-btn:hover {
+    background-color: #ffd84a;
+    box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.2);
+}

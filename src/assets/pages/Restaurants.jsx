@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom';
 import '../styles/Restaurants.css'
 import menuicon from "../images/menu-icon.png";
 import locationicon from "../images/location-icon.png";
-
 import charcoals from "../images/Charcoals.png";
 
 function Restaurants({ selectedLocation }) {
@@ -15,14 +14,14 @@ function Restaurants({ selectedLocation }) {
   ];
 
   return (
-    <main>
+    <main className='restaurantspage'>
       <section className='recommended'>
         <div className='recommended-header'>
           <h1>Recommended restaurants in {selectedLocation}</h1>
         </div>
         <div className='recommended-container'>
           {restaurantData.map((restaurant, index) => (
-            <article className="restaurant-lists" key={index}>
+            <section className="restaurant-lists" key={index}>
               <div className="restaurant-ratings">{restaurant.ratings}</div>
               <img src={charcoals} alt='Restaurant' />
               <div className='restaurant-details'>
@@ -37,7 +36,8 @@ function Restaurants({ selectedLocation }) {
                   See Location
                 </Link>
               </div>
-            </article>
+              <button className='booktable-btn'>Book a Table</button>
+            </section>
           ))}
         </div>
       </section>

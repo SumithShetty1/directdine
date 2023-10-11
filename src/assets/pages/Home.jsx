@@ -7,7 +7,7 @@ import About from '../components/Home/About';
 
 function Home({ selectedLocation }) {
   return (
-    <main>
+    <main className='homepage'>
       <Recommend selectedLocation={selectedLocation} />
       <Added selectedLocation={selectedLocation} />
       <AllRestaurants/>
