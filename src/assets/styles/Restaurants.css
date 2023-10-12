@@ -6,10 +6,30 @@
 /* Recommended */
 .recommended-header {
     width: 100%;
+    margin-top: 20px;
 }
 
 .recommended-header h1 {
     display: inline-block;
+    margin-top: 0;
+}
+
+.sort-container {
+    float: right;
+    font-size: 16px;
+}
+
+.sort-container label {
+    margin-right: 6px;
+}
+
+.sort-container select {
+    height: 28px;
+    padding-left: 5px;
+    border: 1px solid lightgray;
+    border-radius: 4px;
+    font-size: 16px;
+    outline: none;
 }
 
 .restaurant-lists {
@@ -63,16 +83,23 @@
     margin: 10px 0;
 }
 
+.restaurant-links {
+    display: flex;
+    gap: 10px;
+}
+
 .restaurant-details a {
     margin: 20px 0;
     color: black;
     text-decoration: none;
-    padding: 0 5px;
+    font-size: 16px;
+    display: flex;
+    gap: 2px;
 }
 
 .restaurant-details img {
-    width: 20px;
-    height: 20px;
+    width: 18px;
+    height: 18px;
 }
 
 /* Book a Table Button */
