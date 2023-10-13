@@ -1,8 +1,10 @@
-import React, {useState} from 'react'
+import React, { useState } from 'react'
 import { Link } from 'react-router-dom';
 import '../styles/Restaurants.css'
 import menuicon from "../images/menu-icon.png";
 import locationicon from "../images/location-icon.png";
+import popularityicon from "../images/popularity-icon.png";
+import dropdownicon from "../images/dropdown-icon.png";
 import charcoals from "../images/Charcoals.png";
 
 function Restaurants({ selectedLocation }) {
@@ -17,6 +19,23 @@ function Restaurants({ selectedLocation }) {
 
   return (
     <main className='restaurantspage'>
+      <aside className='filter'>
+        <h3>Quick Filters</h3>
+        <input type="checkbox" id="check" />
+        <label htmlFor="check" className="checkbtn">
+          <img src={dropdownicon} alt='' />
+        </label>
+        <div className='filter-options'>
+          <div>
+            <input type="checkbox" name="pureveg" id="pureveg" />
+            <label htmlFor='pureveg'>Pure Veg</label>
+          </div>
+          <div>
+            <input type="checkbox" name="nonveg" id="nonveg" />
+            <label htmlFor='nonveg'>Non Veg</label>
+          </div>
+        </div>
+      </aside>
       <section className='recommended'>
         <div className='recommended-header'>
           <h1>Recommended restaurants in {selectedLocation}</h1>
@@ -35,8 +54,9 @@ function Restaurants({ selectedLocation }) {
               <img src={charcoals} alt='Restaurant' />
               <div className='restaurant-details'>
                 <h2>{restaurant.name}</h2>
-                <p>{restaurant.location}</p>
-                <span className='restaurant-links'>
+                <p className='location'>{restaurant.location}</p>
+                <p>Pure Veg</p>
+                <div className='restaurant-links'>
                   <Link>
                     <img src={menuicon} alt='' />
                     <span>View Menu</span>
@@ -45,16 +65,17 @@ function Restaurants({ selectedLocation }) {
                     <img src={locationicon} alt='' />
                     <span>See Location</span>
                   </Link>
-                </span>
+                </div>
+                <div className='popularity'>
+                  <img src={popularityicon} alt='' />
+                  <span>Popularity</span>
+                </div>
               </div>
               <button className='booktable-btn'>Book a Table</button>
             </section>
           ))}
         </div>
       </section>
-      <aside className='filter'>
-        
-      </aside>
     </main>
   );
 }
