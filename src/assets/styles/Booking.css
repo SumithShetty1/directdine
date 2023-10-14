@@ -1,0 +1,73 @@
+/* Booking */
+.booking {
+    max-width: 100%;
+}
+
+.restaurant-info {
+    margin-top: 20px;
+    border-radius: 5px;
+}
+
+.restaurant-info > img {
+    width: 720px;
+    height: 300px;
+    border-radius: 5px 5px 0 0;
+}
+
+.information {
+    height: fit-content;
+    padding: 0 10px 10px 10px;
+    box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+.info-header {
+    width: 100%;
+    font-size: 16px;
+    margin-bottom: 20px;
+}
+
+.info-header h2 {
+    display: inline-block;
+}
+
+.info-header img {
+    width: 18px;
+    height: 18px;
+    margin-right: 8px;
+}
+
+.rating {
+    float: right;
+    margin-top: 20px;
+}
+
+.info-header p {
+    color: grey;
+    margin-top: 0px;
+    margin-bottom: 8px;
+}
+
+.info-nav {
+    padding: 15px 0;
+    border-top: 1px solid lightgrey;
+    border-bottom: 1px solid lightgrey;
+}
+
+.info-nav a {
+    color: black;
+    font-size: 18px;
+    font-weight: bold;
+    text-decoration: none;
+    padding: 10px;
+    margin-right: 20px;
+}
+
+.info-nav a:hover {
+    color: #ffd84a;
+    border-bottom: 6px solid rgb(255, 0, 0);
+}
+
+.info-nav a:focus {
+    color: #ffd84a;
+    border-bottom: 6px solid rgb(255, 0, 0);
+}

@@ -4,7 +4,8 @@ import '../styles/Restaurants.css'
 import menuicon from "../images/menu-icon.png";
 import locationicon from "../images/location-icon.png";
 import popularityicon from "../images/popularity-icon.png";
-import dropdownicon from "../images/dropdown-icon.png";
+import minusicon from "../images/minus-icon.png";
+import plusicon from "../images/plus-icon.png";
 import charcoals from "../images/Charcoals.png";
 
 function Restaurants({ selectedLocation }) {
@@ -23,7 +24,8 @@ function Restaurants({ selectedLocation }) {
         <h3>Quick Filters</h3>
         <input type="checkbox" id="check" />
         <label htmlFor="check" className="checkbtn">
-          <img src={dropdownicon} alt='' />
+          <img src={plusicon} alt='' className='plusicon' />
+          <img src={minusicon} alt='' className='minusicon' />
         </label>
         <div className='filter-options'>
           <div>
@@ -55,7 +57,7 @@ function Restaurants({ selectedLocation }) {
               <div className='restaurant-details'>
                 <h2>{restaurant.name}</h2>
                 <p className='location'>{restaurant.location}</p>
-                <p>Pure Veg</p>
+                <p>&#8377; 100 for 2 approx</p>
                 <div className='restaurant-links'>
                   <Link>
                     <img src={menuicon} alt='' />
@@ -71,7 +73,9 @@ function Restaurants({ selectedLocation }) {
                   <span>Popularity</span>
                 </div>
               </div>
-              <button className='booktable-btn'>Book a Table</button>
+              <Link to='/booking' className='booktable-link'>
+                <button className='booktable-btn'>Book a Table</button>
+              </Link>
             </section>
           ))}
         </div>

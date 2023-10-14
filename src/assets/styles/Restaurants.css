@@ -11,8 +11,8 @@
     height: fit-content;
     padding: 10px 15px;
     margin-top: 20px;
+    border: 1px solid lightgrey;
     border-radius: 4px;
-    background-color: rgba(173, 173, 173, 0.2);
 }
 
 .filter h3 {
@@ -37,6 +37,18 @@
     display: none;
 }
 
+.minusicon {
+    margin-top: 6px;
+    display: none;
+}
+
+#check:checked ~ .checkbtn .plusicon {
+    display: none;
+}
+
+#check:checked ~ .checkbtn .minusicon {
+    display: block;
+}
 
 #check:checked ~ .filter-options {
     display: block;
@@ -45,7 +57,7 @@
 
 .filter-options {
     display: none;
-    margin-top: 10px;
+    margin-top: 20px;
     padding-right: 4px;
     font-size: 16px;
 }
@@ -86,7 +98,7 @@
 .sort-container select {
     height: 28px;
     padding-left: 5px;
-    border: 1px solid lightgray;
+    border: 1px solid lightgrey;
     border-radius: 4px;
     font-size: 16px;
     outline: none;
@@ -176,6 +188,10 @@
 }
 
 /* Book a Table Button */
+.booktable-link {
+    margin: auto 10px;
+}
+
 .booktable-btn {
     width: 150px;
     height: 40px;
@@ -186,7 +202,6 @@
     border: none;
     border-radius: 4px;
     cursor: pointer;
-    margin: auto 10px;
 }
 
 .booktable-btn:hover {

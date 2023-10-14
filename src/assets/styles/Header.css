@@ -33,7 +33,7 @@ header img {
   width: 30%;
   height: 38px;
   padding-left: 35px;
-  border: 1px solid lightgray;
+  border: 1px solid lightgrey;
   border-radius: 4px;
   outline: none;
   background: url("../images/location-icon.png") no-repeat;
@@ -45,7 +45,7 @@ header img {
 .search-input {
   width: 60%;
   height: 38px;
-  border: 1px solid lightgray;
+  border: 1px solid lightgrey;
   border-right: none;
   border-radius: 4px 0px 0px 4px;
   outline: none;
