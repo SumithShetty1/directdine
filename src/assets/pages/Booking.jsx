@@ -1,13 +1,19 @@
-import React from 'react'
-import { Link } from 'react-router-dom';
+import React, { useState } from 'react'
 import '../styles/Booking.css'
 import staricon from "../images/star-icon.png"
 import locationicon from "../images/location-icon.png";
 import moneyicon from "../images/money-icon.png"
 import clockicon from "../images/clock-icon.png"
 import charcoals from "../images/Charcoals.png";
+import menu from "../images/menu.png";
 
 function Booking() {
+    const [selectedTab, setSelectedTab] = useState('about'); // Default selected tab
+
+    const handleTabChange = (tab) => {
+        setSelectedTab(tab);
+    };
+
     return (
         <main className='booking'>
             <section className='restaurant-info'>
@@ -33,13 +39,65 @@ function Booking() {
                         </p>
                     </section>
                     <section className='info-nav'>
-                        <Link>Menu</Link>
-                        <Link>Photos</Link>
-                        <Link>Reviews</Link>
-                        <Link>Contact</Link>
+                        <input
+                            type="radio"
+                            id="aboutcheck"
+                            name="info-tabs"
+                            value="about"
+                            checked={selectedTab === 'about'}
+                            onChange={() => handleTabChange('about')}
+                        />
+                        <label htmlFor="aboutcheck">About</label>
+                        <input
+                            type="radio"
+                            id="menucheck"
+                            name="info-tabs"
+                            value="menu"
+                            checked={selectedTab === 'menu'}
+                            onChange={() => handleTabChange('menu')}
+                        />
+                        <label htmlFor="menucheck">Menu</label>
+                        <input
+                            type="radio"
+                            id="photoscheck"
+                            name="info-tabs"
+                            value="photos"
+                            checked={selectedTab === 'photos'}
+                            onChange={() => handleTabChange('photos')}
+                        />
+                        <label htmlFor="photoscheck">Photos</label>
+                        <input
+                            type="radio"
+                            id="reviewscheck"
+                            name="info-tabs"
+                            value="reviews"
+                            checked={selectedTab === 'reviews'}
+                            onChange={() => handleTabChange('reviews')}
+                        />
+                        <label htmlFor="reviewscheck">Reviews</label>
                     </section>
                     <section className='info-container'>
-
+                        {/* Render the content based on the selectedTab state */}
+                        {selectedTab === 'about' && (
+                            <div>About</div>
+                        )}
+                        {selectedTab === 'menu' && (
+                            <figure>
+                                <img src={menu} alt="" />
+                            </figure>
+                        )}
+                        {selectedTab === 'photos' && (
+                            <figure className='photos'>
+                                <img src={menu} alt="" />
+                                <img src={menu} alt="" />
+                                <img src={menu} alt="" />
+                                <img src={menu} alt="" />
+                                <img src={menu} alt="" />
+                            </figure>
+                        )}
+                        {selectedTab === 'reviews' && (
+                            <div>Contact Content</div>
+                        )}
                     </section>
                 </section>
             </section>
