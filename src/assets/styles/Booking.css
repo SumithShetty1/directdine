@@ -1,9 +1,12 @@
 /* Booking */
 .booking {
     max-width: 100%;
+    display: flex;
+    gap: 50px;
 }
 
 .restaurant-info {
+    width: 100%;
     margin-top: 20px;
     border-radius: 5px;
 }
@@ -22,7 +25,6 @@
 }
 
 .info-header {
-    width: 100%;
     font-size: 16px;
     margin-bottom: 20px;
 }
@@ -31,21 +33,22 @@
     display: inline-block;
 }
 
+.info-header p {
+    display: flex;
+    gap: 8px;
+    color: grey;
+    margin-top: 0px;
+    margin-bottom: 12px;
+}
+
 .info-header img {
     width: 18px;
     height: 18px;
-    margin-right: 8px;
 }
 
 .rating {
     float: right;
     margin-top: 20px;
-}
-
-.info-header p {
-    color: grey;
-    margin-top: 0px;
-    margin-bottom: 8px;
 }
 
 .info-nav {
@@ -80,21 +83,62 @@
 
 .info-container {
     height: fit-content;
+    margin: 20px 0;
+    color: grey;
+}
+
+.info-about div {
+    margin-bottom: 30px;
+}
+
+.info-about h3 {
+    color: black;
+    margin-bottom: 10px;
 }
 
 .info-container figure {
-    margin-left: 0;
-    margin-right: 0;
+    margin: 0;
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+    cursor: pointer;
+}
+
+.info-container figure img:hover {
+    transform: scale(1.05);
 }
 
 .info-container img {
-    width: 160px;
-    height: 216px;
+    width: 215px;
+    height: 238px;
     border-radius: 5px;
 }
 
-.photos img {
-    width: 212px;
-    height: 190px;
-    margin: 0 6px 6px 6px;
+.contact {
+    border-top: 1px solid lightgrey;
+}
+
+.contact p {
+    display: flex;
+    gap: 8px;
+    color: grey;
+}
+
+.contact img {
+    width: 19px;
+    height: 19px;
+}
+
+.contact iframe {
+    width: 100%;
+    height: 320px;
+}
+
+.bookingform {
+    width: 100%;
+    height: fit-content;
+    border-radius: 5px;
+    padding: 0 20px 20px 20px;
+    margin-top: 20px;
+    box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.3);
 }
