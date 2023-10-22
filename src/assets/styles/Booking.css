@@ -6,21 +6,20 @@
 }
 
 .restaurant-info {
-    width: 100%;
     margin-top: 20px;
-    border-radius: 5px;
 }
 
 .restaurant-info > img {
     width: 720px;
     height: 300px;
-    border-radius: 5px 5px 0 0;
+    border-radius: 10px 10px 0 0;
 }
 
 .information {
     width: 680px;
     height: fit-content;
     padding: 0 20px 20px 20px;
+    border-radius: 5px;
     box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.3);
 }
 
@@ -135,10 +134,85 @@
 }
 
 .bookingform {
-    width: 100%;
+    width: 400px;
     height: fit-content;
     border-radius: 5px;
-    padding: 0 20px 20px 20px;
     margin-top: 20px;
     box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+.bookingform h3 {
+    text-align: center;
+    margin: 0;
+    padding: 15px 0;
+    font-size: 18px;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    background-color: #f4c824;
+}
+
+.formcontainer {
+    padding: 0px 30px 25px 30px;
+    font-size: 17px;
+}
+
+.formcontainer label {
+    display: inline-block;
+    margin: 20px 0 5px 0;
+    font-weight: bold;
+}
+
+.formcontainer input {
+    display: block;
+    width: 322px;
+    height: 30px;
+    padding: 5px 10px 5px 10px;
+    font-size: 15px;
+    border-radius: 5px;
+    border: 1px solid grey;
+}
+
+.formcontainer select {
+    display: block;
+    width: 340px;
+    height: 40px;
+    padding: 10px;
+    font-size: 15px;
+    border-radius: 5px;
+    border: 1px solid grey;
+    cursor: pointer;
+}
+
+.optional {
+    color: grey;
+    font-weight: normal;
+}
+
+.formcontainer textarea {
+    display: block;
+    width: 322px;
+    height: 150px;
+    padding: 10px 10px 5px 10px;
+    font-size: 15px;
+    border-radius: 5px;
+    border: 1px solid grey;
+}
+
+.submitbtn {
+    width: 340px !important;
+    height: 50px !important;
+    font-size: 18px !important;
+    padding: 0 !important;
+    color: black;
+    font-weight: bold;
+    background-color: #f4c824;
+    border: none !important;
+    border-radius: 5px;
+    cursor: pointer;
+    margin: 20px 0 0 0;
+}
+
+.submitbtn:hover {
+    background-color: #ffd84a;
+    box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.2);
 }
