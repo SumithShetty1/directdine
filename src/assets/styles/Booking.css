@@ -50,6 +50,7 @@
     margin-top: 20px;
 }
 
+/* Restaurant Info Navigation */
 .info-nav {
     padding: 15px 0;
     border-top: 1px solid lightgrey;
@@ -86,6 +87,7 @@
     color: grey;
 }
 
+/* Restaurant About */
 .info-about div {
     margin-bottom: 30px;
 }
@@ -95,6 +97,7 @@
     margin-bottom: 10px;
 }
 
+/* Restaurant Menu and Photos */
 .info-container figure {
     margin: 0;
     display: flex;
@@ -113,6 +116,296 @@
     border-radius: 5px;
 }
 
+/* Restaurant Reviews */
+/* Reviews Header */
+.reviewsheader {
+    display: flex;
+    gap: 30px;
+}
+
+.reviewsheader hr {
+    border: 1px solid grey;
+}
+
+.overallratings {
+    text-align: center;
+    margin: auto;
+}
+
+.overallratings h1 {
+    color: black;
+    font-size: 50px;
+    margin: 0;
+}
+
+.profile {
+    width: fit-content;
+    display: flex;
+    gap: 12px;
+}
+
+.reviewsheader img {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+}
+
+.profile h3 {
+    color: black;
+    margin: 5px 0;
+}
+
+.rating-stars {
+    width: fit-content;
+    display: flex;
+    gap: 10px;
+    margin: 20px auto;
+}
+
+.overallratingstars {
+    margin: 20px;
+}
+
+.rating-stars label {
+    cursor: pointer;
+}
+
+.rating-stars input {
+    display: none;
+}
+
+.rating-stars label {
+    cursor: pointer;
+}
+
+.rating-stars input {
+    display: none;
+}
+
+.starnotfilled {
+    width: 25px;
+    height: 25px;
+}
+
+.starfilled {
+    width: 25px;
+    height: 25px;
+    display: none;
+}
+
+/* Overall Rating */
+#overallstar1:checked ~ .star1 > .starfilled {
+    display: inline-block;
+}
+
+#overallstar1:checked ~ .star1 > .starnotfilled {
+    display: none;
+}
+
+#overallstar2:checked ~ .star2 > .starfilled {
+    display: inline-block;
+}
+
+#overallstar2:checked ~ .star2 > .starnotfilled {
+    display: none;
+}
+
+#overallstar3:checked ~ .star3 > .starfilled {
+    display: inline-block;
+}
+
+#overallstar3:checked ~ .star3 > .starnotfilled {
+    display: none;
+}
+
+#overallstar4:checked ~ .star4 > .starfilled {
+    display: inline-block;
+}
+
+#overallstar4:checked ~ .star4 > .starnotfilled {
+    display: none;
+}
+
+#overallstar5:checked ~ .star5 > .starfilled {
+    display: inline-block;
+}
+
+#overallstar5:checked ~ .star5 > .starnotfilled {
+    display: none;
+}
+
+/* Rating */
+#star1:checked ~ .star1 > .starfilled {
+    display: inline-block;
+}
+
+#star1:checked ~ .star1 > .starnotfilled {
+    display: none;
+}
+
+#star2:checked ~ .star2 > .starfilled {
+    display: inline-block;
+}
+
+#star2:checked ~ .star2 > .starnotfilled {
+    display: none;
+}
+
+#star3:checked ~ .star3 > .starfilled {
+    display: inline-block;
+}
+
+#star3:checked ~ .star3 > .starnotfilled {
+    display: none;
+}
+
+#star4:checked ~ .star4 > .starfilled {
+    display: inline-block;
+}
+
+#star4:checked ~ .star4 > .starnotfilled {
+    display: none;
+}
+
+#star5:checked ~ .star5 > .starfilled {
+    display: inline-block;
+}
+
+#star5:checked ~ .star5 > .starnotfilled {
+    display: none;
+}
+
+.reviews textarea {
+    display: inline-block;
+    width: 350px;
+    height: 90px;
+    padding: 10px;
+    font-size: 17px;
+    border-radius: 5px;
+    border: 1px solid grey;
+}
+
+.post-btn {
+    width: 80px;
+    height: 40px;
+    margin: 10px 0;
+    color: white;
+    background: #f4c824;
+    font-size: 16px;
+    font-weight: bold;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.post-btn:hover {
+    background-color: #ffd84a;
+    box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.2);
+}
+
+/* Reviews Container  */
+.reviewcontainer {
+    margin: 30px 0 20px 0;
+}
+
+.customer-reviews {
+    border-bottom: 1px solid lightgrey;
+    margin-bottom: 20px;
+}
+
+.reviewed-profile {
+    margin-top: 15px;
+    width: fit-content;
+    display: flex;
+    gap: 12px;
+}
+
+.reviewed-profile img {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+}
+
+.reviewed-profile p {
+    color: black;
+    margin: 2px 0;
+}
+
+.post-date {
+    color: grey !important;
+    font-size: 15px;
+    padding-left: 444px;
+}
+
+.reviewed-ratings {
+    width: fit-content;
+    display: flex;
+    gap: 1px;
+    margin: 8px 0;
+}
+
+.reviewed-ratings img {
+    width: 25px;
+    height: 25px;
+}
+
+.reviewed-ratings p {
+    margin: 6px;
+    font-size: 18px;
+}
+
+.reviewcontainer p {
+    color: black;
+    height: fit-content;
+}
+
+.see-more-reviews {
+    display: none;
+}
+
+#seemore {
+    display: none;
+}
+
+.reviewcontainer label {
+    display: block;
+    text-align: center;
+}
+
+.reviewcontainer label img {
+    width: 20px;
+    height: 20px;
+}
+
+.downarrow {
+    display: inline-block;
+}
+
+.downarrow p{
+    margin: 5px 0;
+}
+
+.uparrow {
+    display: none;
+}
+
+.uparrow p {
+    margin: 5px 0;
+}
+
+#seemore:checked ~ label .downarrow {
+    display: none;
+}
+
+#seemore:checked ~ label .uparrow {
+    display: inline-block;
+}
+
+#seemore:checked ~ .see-more-reviews {
+    display: block;
+}
+
+/* Restaurant Contact */
 .contact {
     border-top: 1px solid lightgrey;
 }
@@ -133,6 +426,8 @@
     height: 320px;
 }
 
+
+/* Booking Form */
 .bookingform {
     width: 400px;
     height: fit-content;
