@@ -1,0 +1,149 @@
+/* Confirmation */
+.confirmation {
+    max-width: 100%;
+    margin-top: 100px;
+    border-radius: 5px;
+    box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+.confirmation-container {
+    padding: 0 40px 0 40px;
+}
+
+.confirmation-header {
+    text-align: center;
+    background-color: #f4c824;
+    padding: 15px 0px;
+    border-radius: 5px 5px 0 0;
+}
+
+.confirmation-header h1 {
+    margin: 0;
+}
+
+.confirmation-container h2 {
+    text-align: center;
+    margin: 20px 0;
+}
+
+.confirmation p {
+    font-size: 20px;
+    display: flex;
+    gap: 10px;
+    margin-bottom: 0;
+}
+
+.confirmation-details {
+    display: flex;
+    gap: 10px;
+    width: fit-content;
+    border: 1px solid grey;
+    margin: 0 auto;
+    padding-bottom: 20px;
+}
+
+.confirmation-details strong {
+    display: inline-block;
+    width: 168px;
+}
+
+.details {
+    display: flex;
+    gap: 50px;
+    margin: 0 25px;
+}
+
+.colon {
+    font-weight: bold;
+}
+
+.details-value {
+    display: inline-block;
+    width: 180px;
+    word-wrap: break-word;
+}
+
+.special-confirmation {
+    display: inline-block;
+    max-width: 180px;
+    word-wrap: break-word;
+}
+
+.edit-btn-container {
+    margin: 35px 0 35px 0;
+    display: block;
+    text-align: center;
+}
+
+.edit-btn {
+    width: 150px;
+    height: 50px;
+    color: white;
+    background: #f4c824;
+    font-size: 18px;
+    font-weight: bold;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.edit-btn:hover {
+    background-color: #ffd84a;
+    box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.2);
+}
+
+.payment-section h2 {
+    text-align: center;
+    margin: 20px 0;
+}
+
+.pay-details .details {
+    margin: 50px auto;
+    width: fit-content;
+}
+
+.pay-details .details .details-value {
+    width: fit-content;
+}
+
+.pay-btn-container {
+    margin: 35px 0 50px 0;
+    display: block;
+    text-align: center;
+}
+
+.pay-btn {
+    width: 150px;
+    height: 50px;
+    color: white;
+    background: #f4c824;
+    font-size: 18px;
+    font-weight: bold;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.pay-btn:hover {
+    background-color: #ffd84a;
+    box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.2);
+}
+
+.processing-message {
+    display: inline-block;
+}
+
+.spinner {
+    display: inline-block;
+    border: 4px solid rgba(0, 0, 0, 0.1);
+    border-left: 4px solid grey;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}

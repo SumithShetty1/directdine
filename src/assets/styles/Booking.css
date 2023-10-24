@@ -291,7 +291,7 @@
     height: 40px;
     margin: 10px 18px 10px 0;
     float: right;
-    color: black;
+    color: white;
     background: #f4c824;
     font-size: 16px;
     font-weight: bold;
@@ -365,18 +365,27 @@
     display: none;
 }
 
+.seemore {
+    text-align: center;
+}
+
 #seemore {
     display: none;
 }
 
 .reviewcontainer label {
-    display: block;
+    display: inline-block;
     text-align: center;
+}
+
+.reviewcontainer label:hover {
+    transform: scale(1.1);
 }
 
 .reviewcontainer label img {
     width: 20px;
     height: 20px;
+    cursor: pointer;
 }
 
 .downarrow {
@@ -501,7 +510,7 @@
     height: 50px !important;
     font-size: 18px !important;
     padding: 0 !important;
-    color: black;
+    color: white;
     font-weight: bold;
     background-color: #f4c824;
     border: none !important;

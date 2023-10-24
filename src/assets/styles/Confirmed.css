@@ -1,0 +1,103 @@
+/* Confirmed */
+.confirmed {
+    max-width: 100%;
+    margin-top: 100px;
+    border-radius: 5px;
+    box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+.confirmed-container {
+    padding: 0 40px 25px 40px;
+}
+
+.confirmed-header {
+    text-align: center;
+    background-color: #f4c824;
+    padding: 15px 0px;
+    border-radius: 5px 5px 0 0;
+}
+
+.confirmed-header h1 {
+    margin: 0;
+}
+
+.confirmed-container h2 {
+    text-align: center;
+    margin: 20px 0;
+}
+
+.confirmed-icon {
+    text-align: center;
+    margin: 20px 0;
+}
+
+.confirmed-icon img {
+    width: 140px;
+    height: 140px;
+}
+
+.confirmed p {
+    font-size: 20px;
+    display: flex;
+    gap: 10px;
+    margin-bottom: 0;
+}
+
+.confirmed-details {
+    display: flex;
+    gap: 10px;
+    width: fit-content;
+    border: 1px solid grey;
+    margin: 0 auto;
+    padding-bottom: 20px;
+}
+
+.confirmed-details strong {
+    display: inline-block;
+    width: 168px;
+}
+
+.details {
+    display: flex;
+    gap: 50px;
+    margin: 0 25px;
+}
+
+.colon {
+    font-weight: bold;
+}
+
+.details-value {
+    display: inline-block;
+    width: 180px;
+    word-wrap: break-word;
+}
+
+.special-confirmed {
+    display: inline-block;
+    max-width: 180px;
+    word-wrap: break-word;
+}
+
+.back-link {
+    margin: 35px 0 10px 0;
+    display: block;
+    text-align: center;
+}
+
+.back-btn {
+    width: 150px;
+    height: 50px;
+    color: white;
+    background: #f4c824;
+    font-size: 18px;
+    font-weight: bold;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.back-btn:hover {
+    background-color: #ffd84a;
+    box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.2);
+}

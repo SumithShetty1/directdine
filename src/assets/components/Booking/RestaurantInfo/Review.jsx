@@ -20,6 +20,12 @@ function Review() {
         }
     };
 
+    const handleSubmit = (e) => {
+        e.preventDefault();
+
+        setReview('')
+    }
+
     return (
         <section className='reviews'>
             <section className='reviewsheader'>
@@ -80,18 +86,22 @@ function Review() {
                             </React.Fragment>
                         ))}
                     </div>
-                    <textarea
-                        id="review"
-                        name="review"
-                        value={review}
-                        onChange={(e) => setReview(e.target.value)}
-                        placeholder='Share details of your own experience at this place'
-                        aria-label="Share details of your own experience at this place"
-                    />
-                    <input type='submit' value="Post" className='post-btn'/>
+                    <form onSubmit={handleSubmit}>
+                        <textarea
+                            id="review"
+                            name="review"
+                            value={review}
+                            onChange={(e) => setReview(e.target.value)}
+                            placeholder='Share details of your own experience at this place'
+                            aria-label="Share details of your own experience at this place"
+                            required
+                        />
+                        <input type='submit' value="Post" className='post-btn' />
+                    </form>
                 </section>
             </section>
             <section className='reviewcontainer'>
+                <hr />
                 <div className='customer-reviews'>
                     <div className='reviewed-profile'>
                         <img src={profile} alt="" />
@@ -165,16 +175,18 @@ function Review() {
                         </p>
                     </div>
                 </div>
-                <label htmlFor='seemore'>
-                    <span className='downarrow'>
-                        <p>See more</p>
-                        <img src={downarrow} alt="" />
-                    </span>
-                    <span className='uparrow'>
-                        <p>See less</p>
-                        <img src={uparrow} alt="" />
-                    </span>
-                </label>
+                <div className='seemore'>
+                    <label htmlFor='seemore'>
+                        <span className='downarrow'>
+                            <p>See more</p>
+                            <img src={downarrow} alt="" />
+                        </span>
+                        <span className='uparrow'>
+                            <p>See less</p>
+                            <img src={uparrow} alt="" />
+                        </span>
+                    </label>
+                </div>
             </section>
         </section>
     );

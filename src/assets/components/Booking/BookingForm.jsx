@@ -1,6 +1,9 @@
 import React, { useState } from 'react'
+import { useNavigate } from 'react-router-dom';
 
 function BookingForm() {
+    const navigate = useNavigate(); // Get the navigate function
+
     const [date, setDate] = useState(getDefaultDate());
     const [time, setTime] = useState('');
     const [diners, setDiners] = useState(1);
@@ -44,6 +47,8 @@ function BookingForm() {
 
     const handleSubmit = (e) => {
         e.preventDefault();
+
+        navigate('/confirmation');
     }
 
     return (
@@ -85,6 +90,7 @@ function BookingForm() {
                         value={diners}
                         onChange={(e) => setDiners(e.target.value)}
                         aria-label="Select Number of Diners"
+                        required
                     >
                         {guestOptions.map((option) => (
                             <option key={option} value={option}>
@@ -102,6 +108,7 @@ function BookingForm() {
                         placeholder='Enter your Phone Number'
                         aria-label="Enter your Phone Number"
                         pattern="[0-9]{10}"
+                        required
                     />
                     <label htmlFor="special">Special Requests <span className='optional'>(optional)</span></label>
                     <textarea
