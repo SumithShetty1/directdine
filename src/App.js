@@ -9,6 +9,7 @@ import Booking from './assets/pages/Booking';
 import Confirmation from './assets/pages/Confirmation';
 import Confirmed from './assets/pages/Confirmed';
 
+
 function App() {
   const [selectedLocation, setSelectedLocation] = useState('Moodbidri');
 
