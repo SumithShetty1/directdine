@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import logo from "../images/Logo.svg";
 import searchicon from "../images/search-icon.png";
 import "../styles/Header.css"
+import Login from "./Header/Login";
 
 function Header({ selectedLocation, setSelectedLocation }) {
   const [locationInputValue, setLocationInputValue] = useState(selectedLocation); // Initialize with default value
@@ -111,7 +112,7 @@ function Header({ selectedLocation, setSelectedLocation }) {
             <a href="#">Contact</a>
           </li>
         </ul>
-        <button className="login-btn">Login</button>
+        <Login/>
       </nav>
     </header>
   );
