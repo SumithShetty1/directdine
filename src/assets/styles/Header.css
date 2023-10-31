@@ -88,33 +88,8 @@ header img {
 nav {
   width: 40%;
   height: 38px;
-  display: flex;
-  gap: 50px;
   align-items: center;
-}
-
-nav ul {
-  width: 70%;
-  list-style: none;
-  padding-left: 0px;
-  text-align: right;
-  font-size: 18px;
-}
-
-nav li {
-  display: inline-block;
-}
-
-nav a {
-  color: black;
-  text-decoration: none;
-  font-weight: bold;
-  padding: 10px;
-  border-radius: 4px;
-}
-
-nav a:hover {
-  background-color: rgba(0, 0, 0,0.1);
+  display: block;
 }
 
 /* Login Button */
@@ -122,6 +97,7 @@ nav a:hover {
   width: 20%;
   height: 40px;
   color: white;
+  float: right;
   background: #f4c824;
   font-size: 16px;
   font-weight: bold;
@@ -134,3 +110,15 @@ nav a:hover {
   background-color: #ffd84a;
   box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.2);
 }
+
+#login-profile {
+  display: none;
+}
+
+.login-profile {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
