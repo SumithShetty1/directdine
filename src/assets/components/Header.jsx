@@ -104,14 +104,6 @@ function Header({ selectedLocation, setSelectedLocation }) {
         </button>
       </div>
       <nav>
-        <ul>
-          <li>
-            <a href="#">Add Restaurant</a>
-          </li>
-          <li>
-            <a href="#">Contact</a>
-          </li>
-        </ul>
         <Login/>
       </nav>
     </header>

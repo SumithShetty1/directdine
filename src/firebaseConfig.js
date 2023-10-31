@@ -16,18 +16,6 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const provider = new GoogleAuthProvider()
-const signInWithGoogle = () =>{
-    signInWithPopup(auth, provider)
 
-    .then((result) => {
-      // Handle the user authentication result here.
-      const user = result.user;
-      console.log('Successfully signed in:', user);
-    })
-    .catch((error) => {
-      // Handle errors, if any.
-      console.error('Error during sign-in:', error);
-    });
-}
 
-export {app, auth, signInWithGoogle};
+export {app, auth, provider, signInWithPopup};
