@@ -20,14 +20,20 @@ function Login() {
 
     return (
         <>
-        <button className="login-btn" onClick={signInWithGoogle}>Login</button>
-        <input type='checkbox' id="login-profile" className='login-check'/>
-        <label htmlFor='login-profile'>
-            <img src={profile} alt="" className='login-profile' />
-        </label>
-        <ul>
-            <li>Log Out</li>
-        </ul>
+            {/* <button className="login-btn" onClick={signInWithGoogle}>Login</button> */}
+            <div className='profile-dropdown'>
+                <input type='checkbox' id="login-profile"/>
+                <label htmlFor='login-profile' className='login-label'>
+                    <img src={profile} alt="" className='login-profile' />
+                </label>
+                <div className='dropDownProfile'>
+                    <ul>
+                        <li>Booking</li>
+                        <li>Contact</li>
+                        <li>Logout</li>
+                    </ul>
+                </div>
+            </div>
         </>
     );
 }

@@ -115,10 +115,69 @@ nav {
   display: none;
 }
 
+#login-profile:checked ~ .dropDownProfile {
+  display: block;
+}
+
+.login-label {
+  
+}
+
+.login-label:hover {
+  background-color: gray;
+}
+
 .login-profile {
+  float: right;
   width: 38px;
   height: 38px;
   border-radius: 50%;
+  margin-right: 15px;
   cursor: pointer;
 }
 
+.profile-dropdown {
+  float: right;
+}
+
+.dropDownProfile {
+  display: none;
+  position: relative;
+  top: 3.6rem;
+  width: 100px;
+  height: fit-content;
+  padding: 15px;
+  border-radius: 8px;
+  background-color: white;
+  border: 1px solid gray;
+}
+
+.dropDownProfile::before {
+  content: '';
+  position: absolute;
+  top: -0.85rem;
+  right: 1.3rem;
+  width: 25px;
+  height: 25px;
+  transform: rotate(45deg);
+  background-color: white;
+  border-left: 1px solid gray;
+  border-top: 1px solid gray;
+}
+
+.dropDownProfile ul {
+  list-style: none;
+  padding-left: 0;
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+.dropDownProfile li {
+  padding: 6px 0;
+  font-size: 17px;
+}
+
+.dropDownProfile li:hover {
+  color: #f4c824;
+  cursor: pointer;
+}
