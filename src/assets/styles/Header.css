@@ -197,3 +197,7 @@ nav ul li ul:hover {
   color: black;
   margin: 0.4rem 0;
 }
+
+.sub-item a {
+  text-decoration: none;
+}

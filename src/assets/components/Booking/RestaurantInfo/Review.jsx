@@ -57,8 +57,8 @@ function Review() {
                     <p>20 reviews</p>
                 </section>
                 <hr />
-                <section>
-                    <div className='profile'>
+                <section className='reviews-section'>
+                    <div className='review-profile'>
                         <img src={profile} alt="" />
                         <h3>Sumith Shetty</h3>
                     </div>

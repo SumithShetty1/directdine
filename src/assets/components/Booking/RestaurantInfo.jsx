@@ -9,7 +9,7 @@ import Review from './RestaurantInfo/Review';
 import Contact from './RestaurantInfo/Contact';
 
 function RestaurantInfo() {
-    const [selectedTab, setSelectedTab] = useState('about'); // Default selected tab
+    const [selectedTab, setSelectedTab] = useState('menu'); // Default selected tab
 
     const handleTabChange = (tab) => {
         setSelectedTab(tab);
@@ -41,15 +41,6 @@ function RestaurantInfo() {
                 <section className='info-nav'>
                     <input
                         type="radio"
-                        id="aboutcheck"
-                        name="info-tabs"
-                        value="about"
-                        checked={selectedTab === 'about'}
-                        onChange={() => handleTabChange('about')}
-                    />
-                    <label htmlFor="aboutcheck">About</label>
-                    <input
-                        type="radio"
                         id="menucheck"
                         name="info-tabs"
                         value="menu"
@@ -78,22 +69,6 @@ function RestaurantInfo() {
                 </section>
                 <section className='info-container'>
                     {/* Render the content based on the selectedTab state */}
-                    {selectedTab === 'about' && (
-                        <section className='info-about'>
-                            <div>
-                                <h3>Cuisine</h3>
-                                <p>South Indian, North Indian, Chinese, Fast Food</p>
-                            </div>
-                            <div>
-                                <h3>Bestselling Items</h3>
-                                <p>Kesari Bath, Chow Chow Bath, 2 Idli 1 Vada Sambar, Rice Bath, Avalakki Bath</p>
-                            </div>
-                            <div>
-                                <h3>Facilities & Features</h3>
-                                <p>Parking, Air Conditioned, Wifi, Cards Accepted, Wallet Accepted</p>
-                            </div>
-                        </section>
-                    )}
                     {selectedTab === 'menu' && (
                         <figure>
                             <img src={menu} alt="" />

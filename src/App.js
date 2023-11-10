@@ -8,6 +8,8 @@ import Restaurants from './assets/pages/Restaurants';
 import Booking from './assets/pages/Booking';
 import Confirmation from './assets/pages/Confirmation';
 import Confirmed from './assets/pages/Confirmed';
+import MyBookings from './assets/pages/MyBookings';
+import Reservations from './assets/pages/Reservations';
 
 
 function App() {
@@ -18,6 +20,8 @@ function App() {
       <Header selectedLocation={selectedLocation} setSelectedLocation={setSelectedLocation} />
       <Routes>
         <Route path="/" element={<Home selectedLocation={selectedLocation} />} />
+        <Route path="/mybookings" element={<MyBookings/>} />
+        <Route path="/reservations" element={<Reservations/>} />
         <Route path="/restaurants" element={<Restaurants selectedLocation={selectedLocation} />} />
         <Route path="/booking" element={<Booking/>} />
         <Route path="/confirmation" element={<Confirmation/>} />
