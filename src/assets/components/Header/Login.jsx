@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { auth, provider, signInWithPopup } from "../../../firebaseConfig"
 import profile from "../../images/profile.png"
 
@@ -20,22 +21,6 @@ function Login() {
 
     return (
         <>
-            {/* <button className="login-btn" onClick={signInWithGoogle}>Login</button> */}
-            {/* <div className='profile-dropdown'>
-                <input type='checkbox' id="login-profile" />
-                <label htmlFor='login-profile' className='login-label'>
-                    <div>
-                        <img src={profile} alt="" className='login-profile' />
-                    </div>
-                </label>
-                <div className='dropDownProfile'>
-                    <ul>
-                        <li>Booking</li>
-                        <li>Contact</li>
-                        <li>Logout</li>
-                    </ul>
-                </div>
-            </div> */}
             <ul>
                 <li>
                     <img src={profile} className="profile" alt="Profile" />
@@ -44,10 +29,16 @@ function Login() {
                             <p>Sumith</p>
                         </li>
                         <li className="sub-item">
-                            <p>Bookings</p>
+                            <Link to="/mybookings">
+                                <p>
+                                    My Bookings
+                                </p>
+                            </Link>
                         </li>
                         <li className="sub-item">
-                            <p>Reservations</p>
+                            <Link to="/reservations">
+                                <p>Reservations</p>
+                            </Link>
                         </li>
                         <li className="sub-item">
                             <p>Logout</p>

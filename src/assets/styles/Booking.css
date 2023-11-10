@@ -87,16 +87,6 @@
     color: grey;
 }
 
-/* Restaurant About */
-.info-about div {
-    margin-bottom: 30px;
-}
-
-.info-about h3 {
-    color: black;
-    margin-bottom: 10px;
-}
-
 /* Restaurant Menu and Photos */
 .info-container figure {
     margin: 0;
@@ -138,7 +128,7 @@
     margin: 0;
 }
 
-.profile {
+.review-profile {
     width: fit-content;
     display: flex;
     gap: 12px;
@@ -150,7 +140,7 @@
     border-radius: 50%;
 }
 
-.profile h3 {
+.review-profile h3 {
     color: black;
     margin: 5px 0;
 }
