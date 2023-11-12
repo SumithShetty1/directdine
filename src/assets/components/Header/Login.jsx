@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { UserAuth } from '../../../context/AuthContext';
 
 function Login() {
-    const { googleSignIn, user, logOut } = UserAuth();
+    const { googleSignIn, user, logOut } = UserAuth;
 
     const handleGoogleSignIn = async () => {
         try {
@@ -35,18 +35,18 @@ function Login() {
                             </li>
                             <Link to="/mybookings">
                                 <li className="sub-item">
-                                    <span class="material-icons-outlined"> grid_view </span>
+                                    <span className="material-icons-outlined"> grid_view </span>
                                     <p>My Bookings</p>
                                 </li>
                             </Link>
                             <Link to="/reservations">
                                 <li className="sub-item">
-                                    <span class="material-icons-outlined"> grid_view </span>
+                                    <span className="material-icons-outlined"> grid_view </span>
                                     <p>Reservations</p>
                                 </li>
                             </Link>
                             <li className="sub-item" onClick={handleSignOut}>
-                                <span class="material-icons-outlined"> logout </span>
+                                <span className="material-icons-outlined"> logout </span>
                                 <p>Logout</p>
                             </li>
                         </ul>
