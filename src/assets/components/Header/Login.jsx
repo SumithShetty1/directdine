@@ -1,51 +1,60 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { auth, provider, signInWithPopup } from "../../../firebaseConfig"
-import profile from "../../images/profile.png"
+import { UserAuth } from '../../../context/AuthContext';
 
 function Login() {
-    const signInWithGoogle = () => {
-        signInWithPopup(auth, provider)
+    const { googleSignIn, user, logOut } = UserAuth();
 
-            .then((result) => {
-                // Handle the user authentication result here.
-                const user = result.user;
-                console.log('Successfully signed in:', user);
-                //   <img src={profile} alt="" className='login-profile' />
-            })
-            .catch((error) => {
-                // Handle errors, if any.
-                console.error('Error during sign-in:', error);
-            });
+    const handleGoogleSignIn = async () => {
+        try {
+            await googleSignIn()
+        }
+        catch (error) {
+            console.log(error)
+        }
+    }
+
+    const handleSignOut = async () => {
+        try {
+            await logOut()
+        }
+        catch (error) {
+            console.log(error)
+        }
     }
 
     return (
         <>
-            <ul>
-                <li>
-                    <img src={profile} className="profile" alt="Profile" />
-                    <ul>
-                        <li className="profile-name">
-                            <p>Sumith</p>
-                        </li>
-                        <li className="sub-item">
+            {user ?
+                <ul>
+                    <li>
+                        <img src={user.photoURL} className="profile" alt="Profile" />
+                        <ul>
+                            <li className="profile-name">
+                                <p>{user.displayName}</p>
+                            </li>
                             <Link to="/mybookings">
-                                <p>
-                                    My Bookings
-                                </p>
+                                <li className="sub-item">
+                                    <span class="material-icons-outlined"> grid_view </span>
+                                    <p>My Bookings</p>
+                                </li>
                             </Link>
-                        </li>
-                        <li className="sub-item">
                             <Link to="/reservations">
-                                <p>Reservations</p>
+                                <li className="sub-item">
+                                    <span class="material-icons-outlined"> grid_view </span>
+                                    <p>Reservations</p>
+                                </li>
                             </Link>
-                        </li>
-                        <li className="sub-item">
-                            <p>Logout</p>
-                        </li>
-                    </ul>
-                </li>
-            </ul>
+                            <li className="sub-item" onClick={handleSignOut}>
+                                <span class="material-icons-outlined"> logout </span>
+                                <p>Logout</p>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+                :
+                <button onClick={handleGoogleSignIn} className='login-btn'>Login</button>
+            }
         </>
     );
 }
