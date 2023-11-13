@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { UserAuth } from '../../../context/AuthContext';
 
 function Login() {
-    const { googleSignIn, user, logOut } = UserAuth;
+    const { googleSignIn, user, logOut } = UserAuth();
 
     const handleGoogleSignIn = async () => {
         try {
