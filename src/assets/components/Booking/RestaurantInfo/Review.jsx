@@ -1,11 +1,19 @@
-import React, { useState } from 'react';
-import profile from '../../../images/profile.png';
+import React, { useState, useEffect } from 'react';
 import starnotfilled from '../../../images/star-not-filled.png';
 import starfilled from '../../../images/star-filled.png';
 import downarrow from '../../../images/down-arrow.png';
 import uparrow from '../../../images/up-arrow.png';
 import { UserAuth } from '../../../../context/AuthContext';
 import { getDocs, collection, getFirestore, addDoc, query, where, doc, updateDoc } from 'firebase/firestore';
+
+// Function to format date as DD-MM-YYYY
+const formatDate = (date) => {
+    const d = new Date(date);
+    const day = d.getDate().toString().padStart(2, '0');
+    const month = (d.getMonth() + 1).toString().padStart(2, '0');
+    const year = d.getFullYear();
+    return `${day}-${month}-${year}`;
+};
 
 function Review({ currentRestaurant }) {
     const { user } = UserAuth();
@@ -29,7 +37,7 @@ function Review({ currentRestaurant }) {
 
         if (!user) {
             // Show an alert if the user is not logged in
-            alert('Please log in to make a reservation.');
+            alert('Please log in to post a review.');
             return;
         }
 
@@ -51,6 +59,7 @@ function Review({ currentRestaurant }) {
             console.log('Review submitted successfully!');
             setRating(0);
             setReview('');
+            alert('Thank you for your reviews');
 
             // Fetch all reviews for this restaurant
             const querySnapshot = await getDocs(
@@ -70,7 +79,7 @@ function Review({ currentRestaurant }) {
             const newOverallRating = totalRating / totalReviews;
 
             // Update 'Restaurants Details' with the new overall rating
-            const restaurantDocRef = doc(db, 'Restaurants Details', currentRestaurant.id);console.log(currentRestaurant.id)
+            const restaurantDocRef = doc(db, 'Restaurants Details', currentRestaurant.id);
             await updateDoc(restaurantDocRef, {
                 Ratings: newOverallRating,
             });
@@ -78,6 +87,40 @@ function Review({ currentRestaurant }) {
         } catch (error) {
             console.error('Error adding review: ', error);
         }
+    };
+
+    const [reviews, setReviews] = useState([]);
+    const [showMore, setShowMore] = useState(false);
+    const [visibleReviews, setVisibleReviews] = useState(3); // Initial number of reviews to display
+
+    useEffect(() => {
+        const fetchReviews = async () => {
+            try {
+                const db = getFirestore();
+                const reviewsCollection = collection(db, 'Reviews');
+
+                // Query reviews based on the restaurant's email address
+                const q = query(reviewsCollection, where('restaurantEmail', '==', currentRestaurant.Email_Address));
+                const querySnapshot = await getDocs(q);
+
+                const reviewsData = querySnapshot.docs.map((doc) => ({
+                    id: doc.id,
+                    ...doc.data(),
+                }));
+                setReviews(reviewsData);
+            } catch (error) {
+                console.error('Error fetching reviews:', error);
+            }
+        };
+
+        if (currentRestaurant && currentRestaurant.Email_Address) {
+            fetchReviews();
+        }
+    }, [currentRestaurant]);
+
+    const toggleReviews = () => {
+        setShowMore(!showMore);
+        setVisibleReviews(showMore ? 3 : reviews.length);
     };
 
     return (
@@ -92,6 +135,7 @@ function Review({ currentRestaurant }) {
                                     type="checkbox"
                                     id={`overallstar${starNumber}`}
                                     checked={overallrating >= starNumber}
+                                    disabled
                                 />
                                 <label htmlFor={`overallstar${starNumber}`} className={`star${starNumber}`}>
                                     <img
@@ -112,8 +156,12 @@ function Review({ currentRestaurant }) {
                 <hr />
                 <section className='reviews-section'>
                     <div className='review-profile'>
-                        <img src={profile} alt="" />
-                        <h3>Sumith Shetty</h3>
+                        {user && user.photoURL && (
+                            <img src={user.photoURL} alt="" />
+                        )}
+                        {user && user.displayName && (
+                            <h3>{user.displayName}</h3>
+                        )}
                     </div>
                     <div className='rating-stars'>
                         {[1, 2, 3, 4, 5].map((starNumber) => (
@@ -155,91 +203,30 @@ function Review({ currentRestaurant }) {
             </section>
             <section className='reviewcontainer'>
                 <hr />
-                <div className='customer-reviews'>
-                    <div className='reviewed-profile'>
-                        <img src={profile} alt="" />
-                        <p>Sumith Shetty</p>
-                        <p className='post-date'>12 Oct 2023</p>
-                    </div>
-                    <div className='reviewed-ratings'>
-                        <img src={starfilled} alt="" />
-                        <p>4</p>
-                    </div>
-                    <p>
-                        It was good
-                    </p>
-                </div>
-                <div className='customer-reviews'>
-                    <div className='reviewed-profile'>
-                        <img src={profile} alt="" />
-                        <p>Sumith Shetty</p>
-                        <p className='post-date'>12 Oct 2023</p>
-                    </div>
-                    <div className='reviewed-ratings'>
-                        <img src={starfilled} alt="" />
-                        <p>4</p>
-                    </div>
-                    <p>
-                        It was good
-                    </p>
-                </div>
-                <div className='customer-reviews'>
-                    <div className='reviewed-profile'>
-                        <img src={profile} alt="" />
-                        <p>Sumith Shetty</p>
-                        <p className='post-date'>12 Oct 2023</p>
-                    </div>
-                    <div className='reviewed-ratings'>
-                        <img src={starfilled} alt="" />
-                        <p>4</p>
-                    </div>
-                    <p>
-                        It was good
-                    </p>
-                </div>
-                <input type="checkbox" id="seemore" />
-                <div className='see-more-reviews'>
-                    <div className='customer-reviews'>
+                {reviews.slice(0, visibleReviews).map((review, index) => (
+                    <div key={index} className='customer-reviews'>
                         <div className='reviewed-profile'>
-                            <img src={profile} alt="" />
-                            <p>Sumith Shetty</p>
-                            <p className='post-date'>12 Oct 2023</p>
+                            <img src={review.profileUrl} alt="" />
+                            <p>{review.name}</p>
+                            <p className='post-date'>{formatDate(review.currentDate)}</p>
                         </div>
                         <div className='reviewed-ratings'>
                             <img src={starfilled} alt="" />
-                            <p>4</p>
+                            <p>{review.rating}</p>
                         </div>
-                        <p>
-                            It was good
-                        </p>
+                        <p>{review.comments}</p>
                     </div>
-                    <div className='customer-reviews'>
-                        <div className='reviewed-profile'>
-                            <img src={profile} alt="" />
-                            <p>Sumith Shetty</p>
-                            <p className='post-date'>12 Oct 2023</p>
-                        </div>
-                        <div className='reviewed-ratings'>
-                            <img src={starfilled} alt="" />
-                            <p>4</p>
-                        </div>
-                        <p>
-                            It was good
-                        </p>
+                ))}
+                {reviews.length > 3 && (
+                    <div className='seemore'>
+                        <label htmlFor='seemore' onClick={toggleReviews}>
+                            <span className='downarrow'>
+                                <p>{showMore ? 'See less' : 'See more'}</p>
+                                <img src={showMore ? uparrow : downarrow} alt="" />
+                            </span>
+                        </label>
                     </div>
-                </div>
-                <div className='seemore'>
-                    <label htmlFor='seemore'>
-                        <span className='downarrow'>
-                            <p>See more</p>
-                            <img src={downarrow} alt="" />
-                        </span>
-                        <span className='uparrow'>
-                            <p>See less</p>
-                            <img src={uparrow} alt="" />
-                        </span>
-                    </label>
-                </div>
+                )}
             </section>
         </section>
     );

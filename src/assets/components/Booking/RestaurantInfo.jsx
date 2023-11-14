@@ -7,10 +7,22 @@ import Review from './RestaurantInfo/Review';
 import Contact from './RestaurantInfo/Contact';
 
 function RestaurantInfo({ currentRestaurant }) {
-    const [selectedTab, setSelectedTab] = useState('menu'); // Default selected tab
+    const [selectedTab, setSelectedTab] = useState('menu');
+    const [showModal, setShowModal] = useState(false);
+    const [selectedImage, setSelectedImage] = useState('');
 
     const handleTabChange = (tab) => {
         setSelectedTab(tab);
+    };
+
+    const openModal = (image) => {
+        setShowModal(true);
+        setSelectedImage(image);
+    };
+
+    const closeModal = () => {
+        setShowModal(false);
+        setSelectedImage('');
     };
 
     if (currentRestaurant) {
@@ -74,14 +86,24 @@ function RestaurantInfo({ currentRestaurant }) {
                         {selectedTab === 'menu' && (
                             <figure className='photos'>
                                 {menuImages.map((menuImage, index) => (
-                                    <img key={index} src={menuImage} alt="" />
+                                    <img
+                                        key={index}
+                                        src={menuImage}
+                                        alt={`Menu ${index}`}
+                                        onClick={() => openModal(menuImage)}
+                                    />
                                 ))}
                             </figure>
                         )}
                         {selectedTab === 'photos' && (
                             <figure className='photos'>
                                 {foodImages.map((foodImage, index) => (
-                                    <img key={index} src={foodImage} alt="" />
+                                    <img
+                                        key={index}
+                                        src={foodImage}
+                                        alt={`Food ${index}`}
+                                        onClick={() => openModal(foodImage)}
+                                    />
                                 ))}
                             </figure>
                         )}
@@ -91,6 +113,16 @@ function RestaurantInfo({ currentRestaurant }) {
                     </section>
                     <Contact currentRestaurant={currentRestaurant} />
                 </section>
+                {showModal && (
+                    <div className='modal-overlay'>
+                        <div className='modal'>
+                            <span className='close' onClick={closeModal}>
+                                &times;
+                            </span>
+                            <img src={selectedImage} alt='Enlarged' />
+                        </div>
+                    </div>
+                )}
             </section>
         );
     } else {
