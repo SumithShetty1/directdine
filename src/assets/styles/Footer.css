@@ -7,3 +7,20 @@ footer {
     color: white;
     background-color: black;
 }
+
+footer p {
+    display: inline-block;
+}
+
+.phone {
+    float: left;
+}
+
+.copyright {
+    margin-left: 420px;
+    margin-right: 420px;
+}
+
+.gmail {
+    float: right;
+}

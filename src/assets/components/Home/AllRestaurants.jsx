@@ -53,6 +53,7 @@ function AllRestaurants() {
         const currentDetailsDocRef = doc(db, 'Current Details', 'MbYytZaUjmmn7B0fkrTU');
 
         const updateData = {
+            id: restaurant.id,
             Booking_Price: restaurant.booking_price,
             City: restaurant.city,
             Closing_Time: restaurant.closing_time,

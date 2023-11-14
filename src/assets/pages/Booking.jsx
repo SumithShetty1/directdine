@@ -6,7 +6,6 @@ import '../styles/Booking.css';
 
 function Booking() {
     const [currentRestaurant, setCurrentRestaurant] = useState(null);
-
     useEffect(() => {
         const fetchData = async () => {
             try {

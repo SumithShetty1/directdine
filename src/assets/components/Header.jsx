@@ -1,66 +1,40 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import logo from "../images/Logo.svg";
-import searchicon from "../images/search-icon.png";
 import "../styles/Header.css"
 import Login from "./Header/Login";
+import { getFirestore, collection, getDocs } from 'firebase/firestore';
 
 function Header({ selectedLocation, setSelectedLocation }) {
-  const [locationInputValue, setLocationInputValue] = useState(selectedLocation); // Initialize with default value
+  const [locationInputValue, setLocationInputValue] = useState(selectedLocation);
   const [locationSuggestions, setLocationSuggestions] = useState([]);
-  const [searchInputValue, setSearchInputValue] = useState("");
-  const [suggestions, setSuggestions] = useState([]);
-  const [selectedQuery, setSelectedQuery] = useState("");
 
-  // Function to get location suggestions based on location query
-  const getLocationSuggestions = (query) => {
-    const locationSuggestions = ["Moodbidri", "Mangalore", "Bantwal"];
-    return locationSuggestions.filter((location) =>
-      location.toLowerCase().includes(query.toLowerCase())
-    );
-  };
+  useEffect(() => {
+    const fetchCities = async () => {
+      try {
+        const db = getFirestore();
+        const restaurantsCollection = collection(db, 'Restaurants Details');
+        const querySnapshot = await getDocs(restaurantsCollection);
+        const cities = new Set(); // Use a Set to avoid duplicates
 
-  // Function to get suggestions based on search query
-  const getSuggestions = (query) => {
-    const suggestions = ["Charcoals", "Grand Palace", "Dominos"];
-    return suggestions.filter((suggestion) =>
-      suggestion.toLowerCase().includes(query.toLowerCase())
-    );
-  };
+        querySnapshot.forEach((doc) => {
+          const city = doc.data().City;
+          cities.add(city);
+        });
 
-  const handleLocationBlur = () => {
-    // Check if the input value doesn't match any suggestions, then revert it to selectedLocation
-    if (!getLocationSuggestions(locationInputValue).includes(locationInputValue)) {
-      setLocationInputValue(selectedLocation);
-    }
-  };
+        setLocationSuggestions(Array.from(cities)); // Convert Set to an array
+      } catch (error) {
+        console.error('Error fetching cities:', error);
+      }
+    };
 
-  const handleLocationQueryChange = (e) => {
-    const query = e.target.value;
+    fetchCities();
+  }, []);
 
-    setLocationInputValue(query);
-
-    const filteredLocationSuggestions = getLocationSuggestions(query);
-    setLocationSuggestions(filteredLocationSuggestions);
-
-    if (filteredLocationSuggestions.includes(query)) {
-      setSelectedLocation(query);
-    }
-  };
-
-  const handleSearchQueryChange = (e) => {
-    const query = e.target.value;
-
-    setSearchInputValue(query);
-
-    const filteredSuggestions = getSuggestions(query);
-    setSuggestions(filteredSuggestions);
-
-    if (filteredSuggestions.includes(query)) {
-      setSelectedQuery(query);
-    } else {
-      setSelectedQuery("");
-    }
+  const handleLocationChange = (e) => {
+    const selectedLocation = e.target.value;
+    setLocationInputValue(selectedLocation);
+    setSelectedLocation(selectedLocation);
   };
 
   return (
@@ -69,42 +43,20 @@ function Header({ selectedLocation, setSelectedLocation }) {
         <img src={logo} alt="logo" />
       </Link>
       <div className="header-input">
-        <input
-          type="text"
-          list="locations"
+        <select
           value={locationInputValue}
-          onBlur={handleLocationBlur} // Handle blur event to check and revert value
-          onChange={handleLocationQueryChange}
+          onChange={handleLocationChange}
           className="location-input"
-          placeholder="Type your location"
-        />
-        <datalist id="locations">
+        >
           {locationSuggestions.map((location, index) => (
-            <option key={index} value={location} />
+            <option key={index} value={location}>
+              {location}
+            </option>
           ))}
-        </datalist>
-        <input
-          type="text"
-          list="search"
-          value={searchInputValue}
-          onChange={handleSearchQueryChange}
-          className="search-input"
-          placeholder="Search for restaurants"
-        />
-        {suggestions.length > 0 && (
-          <datalist id="search">
-            {suggestions.map((suggestion, index) => (
-              <option key={index} value={suggestion} />
-            ))}
-          </datalist>
-        )}
-        <button className="search-btn">
-          <img src={searchicon} className="search-icon" alt="Search" />
-          Search
-        </button>
+        </select>
       </div>
       <nav>
-        <Login/>
+        <Login />
       </nav>
     </header>
   );
