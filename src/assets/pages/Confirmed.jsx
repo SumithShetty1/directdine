@@ -1,7 +1,8 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import '../styles/Confirmed.css'
 import confirmed from '../images/confirmed.png'
+
 
 function formatISODateToDDMMYYYY(isoDate) {
     const date = new Date(isoDate);
@@ -12,15 +13,19 @@ function formatISODateToDDMMYYYY(isoDate) {
 }
 
 function Confirmed() {
-    const restaurantname = "Charcoal's Family Restaurant"
-    const name = "Sumith Shetty"
-    const isoDate = new Date().toISOString().split('T')[0];
-    const formattedDate = formatISODateToDDMMYYYY(isoDate);
-    const time = '9:00 pm'
-    const diners = 1;
-    const phone = 7878787878;
-    const special = '';
-    const amountPaid = 50.00;
+    const location = useLocation();
+    const {
+        username,
+        rname,
+        price,
+        date,
+        time,
+        diners,
+        phone,
+        special,
+    } = location.state || {};
+
+    const formattedDate = formatISODateToDDMMYYYY(date);
 
     return (
         <main className='confirmed'>
@@ -38,12 +43,12 @@ function Confirmed() {
                             <p>
                                 <strong>Restaurant Name</strong>
                                 <span className='colon'>:</span>
-                                <span className='details-value'>{restaurantname}</span>
+                                <span className='details-value'>{rname}</span>
                             </p>
                             <p>
                                 <strong>Name</strong>
                                 <span className='colon'>:</span>
-                                <span className='details-value'>{name}</span>
+                                <span className='details-value'>{username}</span>
                             </p>
                         </span>
                         <span className='details'>
@@ -67,7 +72,7 @@ function Confirmed() {
                             <p>
                                 <strong>Amount Paid</strong>
                                 <span className='colon'>:</span>
-                                <span>{amountPaid.toFixed(2)}</span> {/* Display the amount paid with two decimal places */}
+                                <span>{price}</span> {/* Display the amount paid with two decimal places */}
                             </p>
                         </span>
                         <span className='details'>

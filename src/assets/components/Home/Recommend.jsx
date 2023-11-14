@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { getDocs, collection, getFirestore, updateDoc, doc } from 'firebase/firestore';
 
 function Recommend({ selectedLocation }) {
@@ -50,11 +50,9 @@ function Recommend({ selectedLocation }) {
     }, [selectedLocation]);
 
     const handleRestaurantClick = async (restaurant) => {
-        // Here, you would update the 'Current Details' collection with the data from the clicked restaurant
         const db = getFirestore();
         const currentDetailsDocRef = doc(db, 'Current Details', 'MbYytZaUjmmn7B0fkrTU');
 
-        // Create an object with the data you want to update
         const updateData = {
             Booking_Price: restaurant.booking_price,
             City: restaurant.city,
@@ -86,11 +84,19 @@ function Recommend({ selectedLocation }) {
         }
     };
 
+    const handleSeeAllClick = () => {
+        if (restaurantData && restaurantData.length > 0) {
+            navigate('/restaurants', { state: { restaurantData, sectionTitle: 'Recommended restaurants in ' + selectedLocation } });
+        } else {
+            console.log('No restaurant data available');
+        }
+    };
+
     return (
         <section className='recommend'>
             <div className='recommend-header'>
                 <h1>Recommended restaurants in {selectedLocation}</h1>
-                <Link to="/restaurants">See All</Link>
+                <span className='link' onClick={handleSeeAllClick}>See All</span>
             </div>
             <div className='recommend-container'>
                 {restaurantData

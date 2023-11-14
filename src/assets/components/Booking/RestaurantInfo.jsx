@@ -1,5 +1,4 @@
-import React, { useState, useEffect } from 'react';
-import { getDocs, collection, getFirestore } from 'firebase/firestore';
+import React, { useState } from 'react';
 import staricon from "../../images/star-icon.png"
 import locationicon from "../../images/location-icon.png";
 import moneyicon from "../../images/money-icon.png"
@@ -7,37 +6,12 @@ import clockicon from "../../images/clock-icon.png"
 import Review from './RestaurantInfo/Review';
 import Contact from './RestaurantInfo/Contact';
 
-function RestaurantInfo() {
+function RestaurantInfo({ currentRestaurant }) {
     const [selectedTab, setSelectedTab] = useState('menu'); // Default selected tab
 
     const handleTabChange = (tab) => {
         setSelectedTab(tab);
     };
-
-    const [currentRestaurant, setCurrentRestaurant] = useState(null);
-
-    useEffect(() => {
-        // Fetch data from the 'Current Details' collection
-        const fetchData = async () => {
-            try {
-                const db = getFirestore();
-                const colRef = collection(db, 'Current Details');
-                const querySnapshot = await getDocs(colRef);
-
-                if (!querySnapshot.empty) {
-                    // Retrieve the first document (assuming there's only one)
-                    const docData = querySnapshot.docs[0].data();
-                    setCurrentRestaurant(docData);
-                } else {
-                    console.log('No data found in Current Details');
-                }
-            } catch (error) {
-                console.error('Error fetching data:', error);
-            }
-        };
-
-        fetchData();
-    }, []);
 
     if (currentRestaurant) {
         const foodImages = currentRestaurant.Food_Images.split(',');
@@ -112,7 +86,7 @@ function RestaurantInfo() {
                             </figure>
                         )}
                         {selectedTab === 'reviews' && (
-                            <Review />
+                            <Review currentRestaurant={currentRestaurant} />
                         )}
                     </section>
                     <Contact currentRestaurant={currentRestaurant} />

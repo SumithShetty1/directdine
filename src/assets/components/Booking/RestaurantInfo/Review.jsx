@@ -4,9 +4,13 @@ import starnotfilled from '../../../images/star-not-filled.png';
 import starfilled from '../../../images/star-filled.png';
 import downarrow from '../../../images/down-arrow.png';
 import uparrow from '../../../images/up-arrow.png';
+import { UserAuth } from '../../../../context/AuthContext';
+import { getDocs, collection, getFirestore, addDoc, query, where, doc, updateDoc } from 'firebase/firestore';
 
-function Review() {
-    const overallrating = 4.5;
+function Review({ currentRestaurant }) {
+    const { user } = UserAuth();
+
+    const overallrating = currentRestaurant.Ratings;
     const [rating, setRating] = useState(0);
     const [review, setReview] = useState('');
 
@@ -20,11 +24,61 @@ function Review() {
         }
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
 
-        setReview('')
-    }
+        if (!user) {
+            // Show an alert if the user is not logged in
+            alert('Please log in to make a reservation.');
+            return;
+        }
+
+        try {
+            const db = getFirestore();
+            const reviewsCollectionRef = collection(db, 'Reviews');
+
+            const reviewData = {
+                name: user.displayName,
+                restaurantEmail: currentRestaurant.Email_Address,
+                rating: rating,
+                comments: review,
+                profileUrl: user.photoURL,
+                currentDate: new Date().toISOString(),
+            };
+
+            // Add the new review to the 'Reviews' collection
+            await addDoc(reviewsCollectionRef, reviewData);
+            console.log('Review submitted successfully!');
+            setRating(0);
+            setReview('');
+
+            // Fetch all reviews for this restaurant
+            const querySnapshot = await getDocs(
+                query(collection(db, 'Reviews'), where('restaurantEmail', '==', currentRestaurant.Email_Address))
+            );
+
+            let totalRating = 0;
+            let totalReviews = 0;
+
+            querySnapshot.forEach((doc) => {
+                const review = doc.data();
+                totalRating += review.rating;
+                totalReviews++;
+            });
+
+            // Calculate the new overall rating
+            const newOverallRating = totalRating / totalReviews;
+
+            // Update 'Restaurants Details' with the new overall rating
+            const restaurantDocRef = doc(db, 'Restaurants Details', currentRestaurant.id);console.log(currentRestaurant.id)
+            await updateDoc(restaurantDocRef, {
+                Ratings: newOverallRating,
+            });
+            console.log('Overall rating updated successfully!');
+        } catch (error) {
+            console.error('Error adding review: ', error);
+        }
+    };
 
     return (
         <section className='reviews'>
@@ -54,7 +108,6 @@ function Review() {
                             </React.Fragment>
                         ))}
                     </div>
-                    <p>20 reviews</p>
                 </section>
                 <hr />
                 <section className='reviews-section'>

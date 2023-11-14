@@ -1,5 +1,6 @@
-import React, {useState} from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useState } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
+import { getFirestore, collection, addDoc } from 'firebase/firestore';
 import '../styles/Confirmation.css'
 
 function formatISODateToDDMMYYYY(isoDate) {
@@ -13,23 +14,57 @@ function formatISODateToDDMMYYYY(isoDate) {
 function Confirmation() {
     const navigate = useNavigate();
 
-    const restaurantname = "Charcoal's Family Restaurant"
-    const name = "Sumith Shetty"
-    const isoDate = new Date().toISOString().split('T')[0];
-    const formattedDate = formatISODateToDDMMYYYY(isoDate);
-    const time = '9:00 pm'
-    const diners = 1;
-    const phone = 7878787878;
-    const special = '';
+    const location = useLocation();
+    const {
+        username,
+        userEmail,
+        rname,
+        email,
+        price,
+        date,
+        time,
+        diners,
+        phone,
+        special,
+    } = location.state || {};
+
+    const formattedDate = formatISODateToDDMMYYYY(date);
+
     const [isProcessing, setIsProcessing] = useState(false);
 
-    const handlePayment = () => {
-        setIsProcessing(true); // Set the processing state to true
-        setTimeout(() => {
-            // Simulate payment processing for 2 seconds (adjust the delay as needed)
-            setIsProcessing(false); // Set the processing state back to false
-            navigate('/confirmed'); // Redirect to the confirmed page
-        }, 2000); // Simulate a 2-second delay
+    const handlePayment = async () => {
+        setIsProcessing(true);
+
+        try {
+            const db = getFirestore();
+            const currentDate = new Date();
+            const year = currentDate.getFullYear();
+            const month = String(currentDate.getMonth() + 1).padStart(2, '0');
+            const day = String(currentDate.getDate()).padStart(2, '0');
+            const formattedDate = `${year}-${month}-${day}`;
+            const reservationsRef = collection(db, 'Reservations'); // Reference to the Reservations collection
+
+            const reservationData = {
+                username,
+                userEmail,
+                rname,
+                email,
+                price,
+                currentdate: formattedDate,
+                date,
+                time,
+                diners,
+                phone,
+                special,
+            };
+
+            await addDoc(reservationsRef, reservationData); // Add a new document with reservationData
+            setIsProcessing(false);
+            navigate('/confirmed', { state: reservationData });
+        } catch (error) {
+            console.error('Error adding reservation:', error);
+            setIsProcessing(false);
+        }
     };
 
     const handleEdit = () => {
@@ -50,12 +85,12 @@ function Confirmation() {
                             <p>
                                 <strong>Restaurant Name</strong>
                                 <span className='colon'>:</span>
-                                <span className='details-value'>{restaurantname}</span>
+                                <span className='details-value'>{rname}</span>
                             </p>
                             <p>
                                 <strong>Name</strong>
                                 <span className='colon'>:</span>
-                                <span className='details-value'>{name}</span>
+                                <span className='details-value'>{username}</span>
                             </p>
                         </span>
                         <span className='details'>
@@ -110,7 +145,7 @@ function Confirmation() {
                     <p className='details'>
                         <strong>Amount to Pay</strong>
                         <span className='colon'>:</span>
-                        <span className='details-value'>50.00</span>
+                        <span className='details-value'>{price}</span>
                     </p>
                 </div>
                 <div className='pay-btn-container'>
