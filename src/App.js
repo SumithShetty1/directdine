@@ -12,7 +12,6 @@ import MyBookings from './assets/pages/MyBookings';
 import Reservations from './assets/pages/Reservations';
 import { AuthContextProvider } from './context/AuthContext';
 
-
 function App() {
   const [selectedLocation, setSelectedLocation] = useState('Moodbidri');
 
@@ -24,7 +23,7 @@ function App() {
           <Route path="/" element={<Home selectedLocation={selectedLocation} />} />
           <Route path="/mybookings" element={<MyBookings />} />
           <Route path="/reservations" element={<Reservations />} />
-          <Route path="/restaurants" element={<Restaurants selectedLocation={selectedLocation} />} />
+          <Route path="/restaurants" element={<Restaurants />} />
           <Route path="/booking" element={<Booking />} />
           <Route path="/confirmation" element={<Confirmation />} />
           <Route path="/confirmed" element={<Confirmed />} />

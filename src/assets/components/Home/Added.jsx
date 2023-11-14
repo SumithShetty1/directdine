@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { getDocs, collection, getFirestore, orderBy, query, updateDoc, doc } from 'firebase/firestore';
 
 function Added({ selectedLocation }) {
@@ -16,12 +16,21 @@ function Added({ selectedLocation }) {
                 const restaurants = [];
                 snapshot.docs.forEach((doc) => {
                     const data = doc.data();
+                    const dateOfCreation = data.Date_of_Creation;
+
+                    // Parse the date of creation string into a Date object
+                    const parsedDate = new Date(
+                        dateOfCreation.split('/')[2], // Year
+                        dateOfCreation.split('/')[0] - 1, // Month (0-based index)
+                        dateOfCreation.split('/')[1] // Day
+                    );
+
                     restaurants.push({
                         id: doc.id,
                         booking_price: data.Booking_Price,
                         city: data.City,
                         closing_time: data.Closing_Time,
-                        date_of_creation: data.Date_of_Creation,
+                        date_of_creation: parsedDate,
                         email_address: data.Email_Address,
                         food_images: data.Food_Images,
                         gmap: data.Gmap,
@@ -38,6 +47,9 @@ function Added({ selectedLocation }) {
                     });
                 });
 
+                // Sort the restaurants by date of creation in decreasing order
+                restaurants.sort((a, b) => b.date_of_creation - a.date_of_creation);
+
                 // Filter the restaurants by location
                 const filteredRestaurants = restaurants.filter(restaurant => restaurant.city === selectedLocation);
 
@@ -49,11 +61,9 @@ function Added({ selectedLocation }) {
     }, [selectedLocation]);
 
     const handleRestaurantClick = async (restaurant) => {
-        // Here, you would update the 'Current Details' collection with the data from the clicked restaurant
         const db = getFirestore();
         const currentDetailsDocRef = doc(db, 'Current Details', 'MbYytZaUjmmn7B0fkrTU');
 
-        // Create an object with the data you want to update
         const updateData = {
             Booking_Price: restaurant.booking_price,
             City: restaurant.city,
@@ -85,11 +95,19 @@ function Added({ selectedLocation }) {
         }
     };
 
+    const handleSeeAllClick = () => {
+        if (restaurantData && restaurantData.length > 0) {
+            navigate('/restaurants', { state: { restaurantData, sectionTitle: 'Newly added restaurants in ' + selectedLocation } });
+        } else {
+            console.log('No restaurant data available');
+        }
+    };
+
     return (
         <section className='new-added'>
             <div className='recommend-header'>
                 <h1>Newly added restaurants in {selectedLocation}</h1>
-                <Link to="/restaurants">See All</Link>
+                <span className='link' onClick={handleSeeAllClick} >See All</span>
             </div>
             <div className='recommend-container'>
                 {restaurantData

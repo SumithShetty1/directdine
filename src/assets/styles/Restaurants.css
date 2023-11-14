@@ -122,7 +122,7 @@
 
 .restaurant-lists img {
     width: 250px;
-    height: fit-content;
+    height: 150px;
     border-top-left-radius: 5px;
 }
 
@@ -157,54 +157,17 @@
     font-size: 18px;
 }
 
-.restaurant-links {
-    margin: 15px 0 30px 0;
-}
-
-.restaurant-links a {
-    margin-right: 30px;
-    color: black;
-    text-decoration: none;
-    font-size: 16px;
-}
-
-.restaurant-links a:hover {
-    color: gold;
-}
-
-.restaurant-links span {
-    margin-left: 5px;
-}
-
 .restaurant-details img {
     width: 18px;
     height: 18px;
+}
+
+.popularity {
+    margin-top: 30px;
 }
 
 .popularity span{
     margin-left: 5px;
     color: grey;
     font-size: 16px;
-}
-
-/* Book a Table Button */
-.booktable-link {
-    margin: auto 10px;
-}
-
-.booktable-btn {
-    width: 150px;
-    height: 40px;
-    color: white;
-    background: #f4c824;
-    font-size: 16px;
-    font-weight: bold;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-}
-
-.booktable-btn:hover {
-    background-color: #ffd84a;
-    box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.2);
 }

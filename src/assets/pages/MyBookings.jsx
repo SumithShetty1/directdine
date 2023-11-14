@@ -1,11 +1,111 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react';
+import { query, where, getDocs, collection, getFirestore } from 'firebase/firestore';
+import { UserAuth } from '../../context/AuthContext';
 
 function MyBookings() {
-  const [selectedTab, setSelectedTab] = useState('today'); // Default selected tab
-
+  const [selectedTab, setSelectedTab] = useState('today');
   const handleTabChange = (tab) => {
     setSelectedTab(tab);
   };
+
+  function formatDateToDDMMYYYY(dateString) {
+    const date = new Date(dateString);
+    const day = date.getDate();
+    const month = date.getMonth() + 1;
+    const year = date.getFullYear();
+
+    const formattedDay = day < 10 ? `0${day}` : day;
+    const formattedMonth = month < 10 ? `0${month}` : month;
+
+    return `${formattedDay}-${formattedMonth}-${year}`;
+  }
+
+  const { user } = UserAuth();
+  const [reservationsData, setReservationsData] = useState([]);
+  const [displayedReservations, setDisplayedReservations] = useState([]);
+  const [status, setStatus] = useState([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const db = getFirestore();
+        const colRef = collection(db, 'Reservations');
+        const querySnapshot = await getDocs(query(colRef, where('userEmail', '==', user.email)));
+
+        const data = [];
+        querySnapshot.forEach((doc) => {
+          data.push(doc.data());
+        });
+
+        setReservationsData(data);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    };
+
+    if (user && user.email) {
+      fetchData();
+    }
+  }, [user]);
+
+  useEffect(() => {
+    const determineFilteredReservations = () => {
+      const currentDate = new Date();
+      const filteredReservations = reservationsData.filter((booking) => {
+        const bookingDate = new Date(booking.date);
+
+        if (selectedTab === 'today') {
+          return (
+            bookingDate.getDate() === currentDate.getDate() &&
+            bookingDate.getMonth() === currentDate.getMonth() &&
+            bookingDate.getFullYear() === currentDate.getFullYear()
+          );
+        } else if (selectedTab === 'week') {
+          const today = new Date();
+          const firstDayOfWeek = new Date(today.setDate(today.getDate() - today.getDay()));
+          const lastDayOfWeek = new Date(firstDayOfWeek);
+          lastDayOfWeek.setDate(lastDayOfWeek.getDate() + 6);
+
+          return bookingDate >= firstDayOfWeek && bookingDate <= lastDayOfWeek;
+        } else if (selectedTab === 'month') {
+          return (
+            bookingDate.getMonth() === currentDate.getMonth() &&
+            bookingDate.getFullYear() === currentDate.getFullYear()
+          );
+        }
+        return true; // For 'all' tab or default case
+      });
+
+      filteredReservations.sort((a, b) => {
+        const dateA = new Date(`${a.date} ${a.time}`);
+        const dateB = new Date(`${b.date} ${b.time}`);
+        return dateB - dateA;
+      });
+
+      const statuses = filteredReservations.map((booking) => {
+        const bookingDate = new Date(booking.date);
+        const bookingTime = new Date(`${booking.date} ${booking.time}`);
+        const oneHourLater = new Date(bookingTime.getTime() + 60 * 60 * 1000);
+
+        if (bookingDate > currentDate || oneHourLater > currentDate) {
+          return '🟢';
+        } else if (
+          bookingDate.getDate() === currentDate.getDate() &&
+          bookingDate.getMonth() === currentDate.getMonth() &&
+          bookingDate.getFullYear() === currentDate.getFullYear()
+        ) {
+          return '🟡';
+        } else {
+          return '🔴';
+        }
+      });
+
+      setStatus(statuses);
+      setDisplayedReservations(filteredReservations);
+    };
+
+    determineFilteredReservations();
+  }, [reservationsData, selectedTab]);
 
   return (
     <main className='reservationsmain'>
@@ -51,62 +151,43 @@ function MyBookings() {
       <section className='info-reservation-container'>
         <table>
           <thead>
-            <th>Restaurant Name <hr /></th>
-            <th>Date <hr /></th>
-            <th>Time <hr /></th>
-            <th>Number of Guests <hr /></th>
-            <th>Phone Number <hr /></th>
-            <th>Status <hr /></th>
+            <tr>
+              <th>Restaurant Name <hr /></th>
+              <th>Date <hr /></th>
+              <th>Time <hr /></th>
+              <th>Number of Guests <hr /></th>
+              <th>Phone Number <hr /></th>
+              <th>Status <hr /></th>
+            </tr>
           </thead>
           <tbody>
-            <tr className='primary-details'>
-              <td className='username'>Charcoal's Family Restaurant</td>
-              <td>12-11-2023</td>
-              <td>12:00 pm</td>
-              <td>24 Guests</td>
-              <td>7676191166</td>
-              <td>
-                <p className='green'></p>
-                <p className='red'></p>
-              </td>
-            </tr>
-            <tr className='more-details'>
-              <th>Date of Booking: </th>
-              <td>01-11-2023</td>
-              <th>Amount Paid: </th>
-              <td>Rs. 100</td>
-              <th>Special Request: </th>
-              <td className='specialsreq'>Special Request is i want a omlet and fried rice and even a birthday cake</td>
-            </tr>
-            <tr>
-              <td colSpan={6}>
-                <hr />
-              </td>
-            </tr>
-            <tr className='primary-details'>
-              <td className='username'>Charcoal's Family Restaurant</td>
-              <td>12-11-2023</td>
-              <td>12:00 pm</td>
-              <td>24 Guests</td>
-              <td>7676191166</td>
-              <td>
-                <p className='green'></p>
-                <p className='red'></p>
-              </td>
-            </tr>
-            <tr className='more-details'>
-              <th>Date of Booking: </th>
-              <td>01-11-2023</td>
-              <th>Amount Paid: </th>
-              <td>Rs. 100</td>
-              <th>Special Request: </th>
-              <td className='specialsreq'>Special Request is i want a omlet and fried rice and even a birthday cake</td>
-            </tr>
-            <tr>
-              <td colSpan={6}>
-                <hr />
-              </td>
-            </tr>
+            {displayedReservations.map((booking, index) => (
+              <React.Fragment key={index}>
+                <tr className='primary-details'>
+                  <td className='username'>{booking.rname}</td>
+                  <td>{formatDateToDDMMYYYY(booking.date)}</td>
+                  <td>{booking.time}</td>
+                  <td>{booking.diners} Guests</td>
+                  <td>{booking.phone}</td>
+                  <td>
+                    <span>{status[index]}</span>
+                  </td>
+                </tr>
+                <tr className='more-details'>
+                  <th>Date of Booking:</th>
+                  <td>{formatDateToDDMMYYYY(booking.currentdate)}</td>
+                  <th>Amount Paid:</th>
+                  <td>{booking.price}</td>
+                  <th>Special Request:</th>
+                  <td className='specialsreq'>{booking.special || 'No special requests'}</td>
+                </tr>
+                <tr>
+                  <td colSpan={6}>
+                    <hr />
+                  </td>
+                </tr>
+              </React.Fragment>
+            ))}
           </tbody>
         </table>
       </section>

@@ -1,54 +1,105 @@
-import React, { useState } from 'react'
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { UserAuth } from '../../../context/AuthContext';
 
-function BookingForm() {
-    const navigate = useNavigate(); // Get the navigate function
+function BookingForm({ currentRestaurant }) {
+    const navigate = useNavigate();
+
+    const { user } = UserAuth();
+    const username = user ? user.displayName : '';
+    const userEmail = user ? user.email : '';
+    const rname = currentRestaurant?.Name;
+    const [price, setPrice] = useState(currentRestaurant?.Booking_Price / 2);
+    const opening = currentRestaurant?.Opening_Time;
+    const closing = currentRestaurant?.Closing_Time;
+    const max_guests = currentRestaurant?.Maximum_Guests;
+    const email= currentRestaurant?.Email_Address;
 
     const [date, setDate] = useState(getDefaultDate());
-    const [time, setTime] = useState('');
     const [diners, setDiners] = useState(1);
     const [phone, setPhone] = useState('');
     const [special, setSpecial] = useState('');
 
-    // Function to get the default date as a string in "YYYY-MM-DD" format
     function getDefaultDate() {
         const today = new Date();
-        return today.toISOString().split('T')[0];
+        const tomorrow = new Date(today);
+        tomorrow.setDate(tomorrow.getDate() + 1); // Get tomorrow's date
+
+        return tomorrow.toISOString().split('T')[0];
     }
 
-    // Function to get the maximum date as a string in "YYYY-MM-DD" format (31 days from the current date)
     function getMaxDate() {
         const maxDate = new Date();
         maxDate.setDate(maxDate.getDate() + 31);
         return maxDate.toISOString().split('T')[0];
     }
 
-    // Function to handle date changes
     const handleDateChange = (e) => {
         const selectedDate = e.target.value;
         setDate(selectedDate);
     }
 
-    // Function to handle time changes
     const handleTimeChange = (e) => {
         const selectedTime = e.target.value;
         setTime(selectedTime);
     }
 
-    // Array of options for the times
-    const timeOptions = [
-        '9:00 AM', '10:00 AM', '11:00 AM', '12:00 PM',
-        '1:00 PM', '2:00 PM', '3:00 PM', '4:00 PM',
-        '5:00 PM', '6:00 PM', '7:00 PM', '8:00 PM', '9:00 PM'
-    ];
+    const startTime = new Date(`01/01/2023 ${opening}`);
+    const endTime = new Date(`01/02/2023 ${closing}`);
 
-    // Array of options for the number of guests
-    const guestOptions = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+    const timeOptions = [];
+
+    while (startTime <= endTime) {
+        timeOptions.push(startTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }));
+        startTime.setHours(startTime.getHours() + 1);
+
+        // Stop the loop at 12:00 PM instead of midnight
+        if (startTime.getHours() === 0 && startTime.getMinutes() === 0) {
+            break;
+        }
+    }
+
+    const [time, setTime] = useState(timeOptions.length > 0 ? timeOptions[0] : '');
+
+    const guestOptions = [];
+    for (let i = 1; i <= max_guests; i++) {
+        guestOptions.push(i);
+    }
+
+    const handleDinersChange = (e) => {
+        const selectedDiners = parseInt(e.target.value);
+        setDiners(selectedDiners);
+
+        // Adjust price based on the number of diners
+        const basePrice = currentRestaurant?.Booking_Price;
+        const pricePerGuest = basePrice / 2; // Assuming initial price is for 2 guests
+        const calculatedPrice = selectedDiners <= 2 ? basePrice : pricePerGuest * selectedDiners;
+        setPrice(calculatedPrice);
+    }
 
     const handleSubmit = (e) => {
         e.preventDefault();
 
-        navigate('/confirmation');
+        if (!user) {
+            // Show an alert if the user is not logged in
+            alert('Please log in to make a reservation.');
+            return;
+        }
+
+        navigate('/confirmation', {
+            state: {
+                username,
+                userEmail,
+                rname,
+                email,
+                price,
+                date,
+                time,
+                diners,
+                phone,
+                special,
+            }
+        });
     }
 
     return (
@@ -62,9 +113,9 @@ function BookingForm() {
                         id="date"
                         name="date"
                         value={date}
-                        onChange={handleDateChange} // Update the state when the user changes the date
-                        min={getDefaultDate()} // Set minimum date to the current date
-                        max={getMaxDate()} // Set maximum date to 31 days from the current date
+                        onChange={handleDateChange}
+                        min={getDefaultDate()}
+                        max={getMaxDate()}
                         aria-label="Select a date for your reservation"
                         required
                     />
@@ -88,7 +139,7 @@ function BookingForm() {
                         id="diners"
                         name="diners"
                         value={diners}
-                        onChange={(e) => setDiners(e.target.value)}
+                        onChange={handleDinersChange}
                         aria-label="Select Number of Diners"
                         required
                     >
@@ -130,4 +181,4 @@ function BookingForm() {
     )
 }
 
-export default BookingForm
+export default BookingForm;

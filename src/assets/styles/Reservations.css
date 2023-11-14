@@ -34,7 +34,7 @@
 }
 
 .info-reservations label:nth-child(8) {
-    margin-right: 20px;
+    margin-right: 0;
 }
 
 .info-reservations label:hover {
@@ -54,22 +54,14 @@
 }
 
 /* Info Table */
-table {
-    color: grey;
-}
-
 .info-reservation-container table thead th {
     font-size: 18px;
     padding-bottom: 10px;
     padding-right: 100px;
 }
 
-.info-reservation-container table thead th:nth-child(6) {
-    padding-right: 0;
-}
 
 .username {
-    display: inline-block;
     max-width: 200px;
     word-wrap: break-word;
 }

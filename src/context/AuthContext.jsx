@@ -6,14 +6,14 @@ const AuthContext = createContext();
 
 export const AuthContextProvider = ({ children }) => {
     const [user, setUser] = useState({});
-    // const isAndroid = /Android/i.test(navigator.userAgent);
+    const isAndroid = /Android/i.test(navigator.userAgent);
 
     const googleSignIn = () => {
         const provider = new GoogleAuthProvider();
         signInWithPopup(auth, provider);
-        // if (isAndroid) {
-        //     signInWithRedirect(auth, provider);
-        // }
+        if (isAndroid) {
+            signInWithRedirect(auth, provider);
+        }
     }
 
     const logOut = () => {

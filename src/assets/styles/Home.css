@@ -12,7 +12,7 @@
     display: inline-block;
 }
 
-.recommend-header a {
+.recommend-header span {
     color: grey;
     font-size: 18px;
     text-decoration: none;
@@ -20,7 +20,7 @@
     float: right;
 }
 
-.recommend-header a:hover {
+.recommend-header span:hover {
     color: gold;
 }
 
@@ -28,6 +28,10 @@
     display: flex;
     gap: 21px;
     max-width: 100%;
+}
+
+.recommend-header .link {
+    cursor: pointer;
 }
 
 .restaurant {
