@@ -87,7 +87,7 @@ function Recommend({ selectedLocation }) {
 
     const handleSeeAllClick = () => {
         if (restaurantData && restaurantData.length > 0) {
-            navigate('/restaurants', { state: { restaurantData, sectionTitle: 'Recommended restaurants in ' + selectedLocation } });
+            navigate('/restaurants', { state: { sectionTitle: 'Recommended restaurants in ' + selectedLocation } });
         } else {
             console.log('No restaurant data available');
         }

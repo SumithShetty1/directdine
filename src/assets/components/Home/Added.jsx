@@ -98,7 +98,7 @@ function Added({ selectedLocation }) {
 
     const handleSeeAllClick = () => {
         if (restaurantData && restaurantData.length > 0) {
-            navigate('/restaurants', { state: { restaurantData, sectionTitle: 'Newly added restaurants in ' + selectedLocation } });
+            navigate('/restaurants', { state: { sectionTitle: 'Newly added restaurants in ' + selectedLocation } });
         } else {
             console.log('No restaurant data available');
         }

@@ -1,53 +1,107 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { getFirestore, updateDoc, doc } from 'firebase/firestore';
+import { getDocs, collection, getFirestore, updateDoc, doc } from 'firebase/firestore';
 import '../styles/Restaurants.css'
 import { useLocation } from 'react-router-dom';
 import popularityicon from "../images/popularity-icon.png";
 import minusicon from "../images/minus-icon.png";
 import plusicon from "../images/plus-icon.png";
 
-function Restaurants() {
-  const [sortOption, setSortOption] = useState('ratings');
+function Restaurants({ selectedLocation }) {
+  const [restaurantData, setRestaurantData] = useState([]);
   const [displayedData, setDisplayedData] = useState([]);
   const navigate = useNavigate();
   const location = useLocation();
-  const { restaurantData, sectionTitle } = location.state || {};
+  const { sectionTitle } = location.state || {};
   const [filterOptions, setFilterOptions] = useState({
     pureVeg: false,
     vegAndNonVeg: false,
   });
+  const [sortOption, setSortOption] = useState('ratings');
 
   useEffect(() => {
-    const applyFilter = () => {
-      let filteredRestaurants = [...restaurantData];
+    const db = getFirestore();
+    const colRef = collection(db, 'Restaurants Details');
 
-      if (filterOptions.pureVeg && filterOptions.vegAndNonVeg) {
-        // Display all data if both checkboxes are checked
-        setDisplayedData(filteredRestaurants);
-        return;
-      }
+    getDocs(colRef)
+      .then((snapshot) => {
+        const restaurants = [];
+        snapshot.docs.forEach((doc) => {
+          const data = doc.data();
+          restaurants.push({
+            id: doc.id,
+            booking_price: data.Booking_Price,
+            city: data.City,
+            closing_time: data.Closing_Time,
+            date_of_creation: data.Date_of_Creation,
+            email_address: data.Email_Address,
+            food_images: data.Food_Images,
+            gmap: data.Gmap,
+            location: data.Location,
+            maximum_guests: data.Maximum_Guests,
+            menu_images: data.Menu_Images,
+            name: data.Name,
+            opening_time: data.Opening_Time,
+            phone_number: data.Phone_Number,
+            popularity: data.Popularity,
+            ratings: data.Ratings,
+            restaurant_image: data.Restaurant_Image,
+            restaurant_type: data.Restaurant_Type,
+          });
+        });
 
-      if (filterOptions.pureVeg) {
-        filteredRestaurants = filteredRestaurants.filter(
-          (restaurant) => restaurant.restaurant_type === 'Pure Veg'
-        );
-      }
-      if (filterOptions.vegAndNonVeg) {
-        filteredRestaurants = filteredRestaurants.filter(
-          (restaurant) => restaurant.restaurant_type === 'Veg and Non Veg'
-        );
-      }
+        // Filter the restaurants by location
+        const filteredRestaurants = selectedLocation
+          ? restaurants.filter((restaurant) => restaurant.city === selectedLocation)
+          : restaurants;
 
-      if (sortOption === 'popularity') {
-        filteredRestaurants.sort((a, b) => b.popularity - a.popularity);
-      }
+        // Apply additional filters based on checkbox state
+        let displayData = applyFilters(filteredRestaurants);
 
-      setDisplayedData(filteredRestaurants);
-    };
+        // Apply sorting based on sort option
+        displayData = applySort(displayData);
 
-    applyFilter();
-  }, [sortOption, restaurantData, filterOptions]);
+        setDisplayedData(displayData);
+        setRestaurantData(filteredRestaurants);
+      })
+      .catch((error) => {
+        console.log(error.message);
+      });
+  }, [selectedLocation]);
+
+  const applyFilters = (data) => {
+    let filteredRestaurants = [...data];
+
+    if (filterOptions.pureVeg && filterOptions.vegAndNonVeg) {
+      // Display all data if both checkboxes are checked
+      return filteredRestaurants;
+    }
+
+    if (filterOptions.pureVeg) {
+      filteredRestaurants = filteredRestaurants.filter(
+        (restaurant) => restaurant.restaurant_type === 'Pure Veg'
+      );
+    }
+
+    if (filterOptions.vegAndNonVeg) {
+      filteredRestaurants = filteredRestaurants.filter(
+        (restaurant) => restaurant.restaurant_type === 'Veg and Non Veg'
+      );
+    }
+
+    return filteredRestaurants;
+  };
+
+  const applySort = (data) => {
+    let sortedRestaurants = [...data];
+    if (sortOption === 'popularity') {
+      sortedRestaurants.sort((a, b) => b.popularity - a.popularity);
+    } else {
+      // Sort by default: ratings
+      sortedRestaurants.sort((a, b) => b.ratings - a.ratings);
+    }
+    return sortedRestaurants;
+  };
 
   const handleRestaurantClick = async (restaurant) => {
     const db = getFirestore();

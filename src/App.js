@@ -23,7 +23,7 @@ function App() {
           <Route path="/" element={<Home selectedLocation={selectedLocation} />} />
           <Route path="/mybookings" element={<MyBookings />} />
           <Route path="/reservations" element={<Reservations />} />
-          <Route path="/restaurants" element={<Restaurants />} />
+          <Route path="/restaurants" element={<Restaurants selectedLocation={selectedLocation} />} />
           <Route path="/booking" element={<Booking />} />
           <Route path="/confirmation" element={<Confirmation />} />
           <Route path="/confirmed" element={<Confirmed />} />
