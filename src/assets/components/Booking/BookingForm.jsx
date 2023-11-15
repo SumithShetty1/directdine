@@ -8,6 +8,7 @@ function BookingForm({ currentRestaurant }) {
     const { user } = UserAuth();
     const username = user ? user.displayName : '';
     const userEmail = user ? user.email : '';
+    const id =currentRestaurant?.id;
     const rname = currentRestaurant?.Name;
     const [price, setPrice] = useState(currentRestaurant?.Booking_Price / 2);
     const opening = currentRestaurant?.Opening_Time;
@@ -88,6 +89,7 @@ function BookingForm({ currentRestaurant }) {
 
         navigate('/confirmation', {
             state: {
+                id,
                 username,
                 userEmail,
                 rname,

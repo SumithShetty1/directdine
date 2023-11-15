@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { getFirestore, collection, addDoc } from 'firebase/firestore';
+import { getFirestore, collection, addDoc, doc, getDoc, updateDoc } from 'firebase/firestore';
 import '../styles/Confirmation.css'
 
 function formatISODateToDDMMYYYY(isoDate) {
@@ -16,6 +16,7 @@ function Confirmation() {
 
     const location = useLocation();
     const {
+        id,
         username,
         userEmail,
         rname,
@@ -34,7 +35,6 @@ function Confirmation() {
 
     const handlePayment = async () => {
         setIsProcessing(true);
-
         try {
             const db = getFirestore();
             const currentDate = new Date();
@@ -42,8 +42,7 @@ function Confirmation() {
             const month = String(currentDate.getMonth() + 1).padStart(2, '0');
             const day = String(currentDate.getDate()).padStart(2, '0');
             const formattedDate = `${year}-${month}-${day}`;
-            const reservationsRef = collection(db, 'Reservations'); // Reference to the Reservations collection
-
+            const reservationsRef = collection(db, 'Reservations');
             const reservationData = {
                 username,
                 userEmail,
@@ -57,12 +56,21 @@ function Confirmation() {
                 phone,
                 special,
             };
+            await addDoc(reservationsRef, reservationData);
 
-            await addDoc(reservationsRef, reservationData); // Add a new document with reservationData
+            const restaurantDocRef = doc(db, 'Restaurants Details', id);
+            const restaurantSnapshot = await getDoc(restaurantDocRef);
+            if (restaurantSnapshot.exists()) {
+                const restaurantData = restaurantSnapshot.data();
+                const currentPopularity = restaurantData.Popularity || 0;
+                const updatedPopularity = currentPopularity + 1;
+
+                await updateDoc(restaurantDocRef, { Popularity: updatedPopularity });
+            }
             setIsProcessing(false);
             navigate('/confirmed', { state: reservationData });
         } catch (error) {
-            console.error('Error adding reservation:', error);
+            console.error('Error processing payment:', error);
             setIsProcessing(false);
         }
     };
