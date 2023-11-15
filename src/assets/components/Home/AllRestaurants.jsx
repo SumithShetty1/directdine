@@ -86,7 +86,7 @@ function AllRestaurants() {
 
     const handleSeeAllClick = () => {
         if (restaurantData && restaurantData.length > 0) {
-            navigate('/restaurants', { state: { restaurantData, sectionTitle: 'Restaurants' } });
+            navigate('/restaurants', { state: { sectionTitle: 'Restaurants' } });
             console.log('No restaurant data available');
         }
     };
