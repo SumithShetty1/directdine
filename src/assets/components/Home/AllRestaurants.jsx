@@ -7,6 +7,7 @@ function AllRestaurants() {
     const navigate = useNavigate();
 
     useEffect(() => {
+        // Fetch data from Firestore when the component mounts
         const db = getFirestore();
         const colRef = collection(db, 'Restaurants Details');
 
@@ -15,7 +16,9 @@ function AllRestaurants() {
                 const restaurants = [];
                 snapshot.docs.forEach((doc) => {
                     const data = doc.data();
+                    // Collect necessary restaurant details
                     restaurants.push({
+                        // Details of each restaurant
                         id: doc.id,
                         booking_price: data.Booking_Price,
                         city: data.City,
@@ -37,10 +40,10 @@ function AllRestaurants() {
                     });
                 });
 
-                // Sort the filtered restaurants by ratings (descending order)
+                // Sort restaurants by ratings in descending order
                 restaurants.sort((a, b) => b.ratings - a.ratings);
 
-                // Set the restaurant data state
+                // Update state with fetched and sorted restaurant data
                 setRestaurantData(restaurants);
             })
             .catch((error) => {
@@ -49,10 +52,12 @@ function AllRestaurants() {
     }, []);
 
     const handleRestaurantClick = async (restaurant) => {
+        // Handle clicking on a restaurant, update Firestore and navigate to '/booking'
         const db = getFirestore();
         const currentDetailsDocRef = doc(db, 'Current Details', 'MbYytZaUjmmn7B0fkrTU');
 
         const updateData = {
+            // Data to update in 'Current Details'
             id: restaurant.id,
             Booking_Price: restaurant.booking_price,
             City: restaurant.city,
@@ -77,7 +82,7 @@ function AllRestaurants() {
             await updateDoc(currentDetailsDocRef, updateData);
             console.log('Data updated successfully.');
 
-            // After updating, navigate to the '/booking' page
+            // Navigate to the '/booking' page after updating data
             navigate('/booking');
         } catch (error) {
             console.error('Error updating data:', error);
@@ -85,8 +90,10 @@ function AllRestaurants() {
     };
 
     const handleSeeAllClick = () => {
+        // Navigate to '/restaurants' page to see all restaurants
         if (restaurantData && restaurantData.length > 0) {
             navigate('/restaurants', { state: { sectionTitle: 'Restaurants' } });
+        } else {
             console.log('No restaurant data available');
         }
     };
@@ -94,17 +101,25 @@ function AllRestaurants() {
     return (
         <section className='all-restaurants'>
             <div className='recommend-header'>
+                {/* Display the title */}
                 <h1>Restaurants</h1>
+                {/* Allow users to see all restaurants */}
                 <span className='link' onClick={handleSeeAllClick}>See All</span>
             </div>
             <div className='recommend-container'>
+                {/* Display top four highly-rated restaurants */}
                 {restaurantData
                     .slice(0, 4) // Display only the top four highly-rated restaurants
                     .map((restaurant, index) => (
+                        // Display each restaurant with its details
                         <article className="restaurant" key={index} onClick={() => handleRestaurantClick(restaurant)}>
+                            {/* Restaurant ratings */}
                             <div className="ratings">{restaurant.ratings}</div>
+                            {/* Restaurant image */}
                             <img src={restaurant.restaurant_image} alt='Restaurant' />
+                            {/* Restaurant name */}
                             <h3>{restaurant.name}</h3>
+                            {/* Restaurant city */}
                             <p>{restaurant.city}</p>
                         </article>
                     ))}

@@ -9,6 +9,7 @@ function Login() {
     const userEmail = user ? user.email : '';
 
     useEffect(() => {
+        // Fetch the restaurant's email address from Firestore
         const fetchRestaurantEmail = async () => {
             const db = getFirestore();
             const colRef = collection(db, 'Restaurants Details');
@@ -20,6 +21,7 @@ function Login() {
 
                     const fetchedEmail = data.Email_Address;
 
+                    // Check if the logged-in user's email matches the restaurant's email
                     if (userEmail === fetchedEmail) {
                         setRestaurantEmail(fetchedEmail);
                         return;
@@ -33,28 +35,28 @@ function Login() {
         fetchRestaurantEmail();
     }, [userEmail]);
 
-
     const handleGoogleSignIn = async () => {
+        // Sign in using Google authentication
         try {
-            await googleSignIn()
+            await googleSignIn();
+        } catch (error) {
+            console.log(error);
         }
-        catch (error) {
-            console.log(error)
-        }
-    }
+    };
 
     const handleSignOut = async () => {
+        // Logout the user
         try {
-            await logOut()
+            await logOut();
+        } catch (error) {
+            console.log(error);
         }
-        catch (error) {
-            console.log(error)
-        }
-    }
+    };
 
     return (
         <>
-            {user ?
+            {user ? (
+                // Display user information if logged in
                 <ul>
                     <li>
                         <img src={user.photoURL} className="profile" alt="Profile" />
@@ -79,6 +81,7 @@ function Login() {
                                     </li>
                                 </Link>
                             )}
+                            {/* Logout button */}
                             <li className="sub-item" onClick={handleSignOut}>
                                 <span className="material-icons-outlined"> logout </span>
                                 <p>Logout</p>
@@ -86,9 +89,12 @@ function Login() {
                         </ul>
                     </li>
                 </ul>
-                :
-                <button onClick={handleGoogleSignIn} className='login-btn'>Login</button>
-            }
+            ) : (
+                // Display login button if user is not logged in
+                <button onClick={handleGoogleSignIn} className="login-btn">
+                    Login
+                </button>
+            )}
         </>
     );
 }

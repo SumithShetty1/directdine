@@ -9,7 +9,7 @@ function Added({ selectedLocation }) {
     useEffect(() => {
         const db = getFirestore();
         const colRef = collection(db, 'Restaurants Details');
-        const q = query(colRef, orderBy('Date_of_Creation', 'desc'));
+        const q = query(colRef, orderBy('Date_of_Creation', 'desc')); // Ordering by date of creation in descending order
 
         getDocs(q)
             .then((snapshot) => {
@@ -26,6 +26,7 @@ function Added({ selectedLocation }) {
                     );
 
                     restaurants.push({
+                        // Collect necessary restaurant details
                         id: doc.id,
                         booking_price: data.Booking_Price,
                         city: data.City,
@@ -65,6 +66,7 @@ function Added({ selectedLocation }) {
         const currentDetailsDocRef = doc(db, 'Current Details', 'MbYytZaUjmmn7B0fkrTU');
 
         const updateData = {
+            // Data to update in 'Current Details'
             id: restaurant.id,
             Booking_Price: restaurant.booking_price,
             City: restaurant.city,
@@ -89,7 +91,7 @@ function Added({ selectedLocation }) {
             await updateDoc(currentDetailsDocRef, updateData);
             console.log('Data updated successfully.');
 
-            // After updating, navigate to the '/booking' page
+            // Navigate to the '/booking' page after updating data
             navigate('/booking');
         } catch (error) {
             console.error('Error updating data:', error);
@@ -97,6 +99,7 @@ function Added({ selectedLocation }) {
     };
 
     const handleSeeAllClick = () => {
+        // Navigate to '/restaurants' page to see all newly added restaurants
         if (restaurantData && restaurantData.length > 0) {
             navigate('/restaurants', { state: { sectionTitle: 'Newly added restaurants in ' + selectedLocation } });
         } else {
@@ -107,17 +110,25 @@ function Added({ selectedLocation }) {
     return (
         <section className='new-added'>
             <div className='recommend-header'>
+                {/* Display the title with the selected location */}
                 <h1>Newly added restaurants in {selectedLocation}</h1>
+                {/* Allow users to see all newly added restaurants */}
                 <span className='link' onClick={handleSeeAllClick} >See All</span>
             </div>
             <div className='recommend-container'>
+                {/* Display top four newly added restaurants */}
                 {restaurantData
-                    .slice(0, 4) // Display only the top four highly-rated restaurants
+                    .slice(0, 4) // Display only the top four newly added restaurants
                     .map((restaurant, index) => (
+                        // Display each restaurant with its details
                         <article className="restaurant" key={index} onClick={() => handleRestaurantClick(restaurant)}>
+                            {/* Restaurant ratings */}
                             <div className="ratings">{restaurant.ratings}</div>
+                            {/* Restaurant image */}
                             <img src={restaurant.restaurant_image} alt='Restaurant' />
+                            {/* Restaurant name */}
                             <h3>{restaurant.name}</h3>
+                            {/* Restaurant city */}
                             <p>{restaurant.city}</p>
                         </article>
                     ))}

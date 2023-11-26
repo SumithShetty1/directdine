@@ -1,5 +1,6 @@
 import React from 'react';
 
+// About component providing information about DirectDine
 function About() {
     return (
         <section className="about">

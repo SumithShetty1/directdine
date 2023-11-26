@@ -31,7 +31,7 @@ function Reservations() {
     const fetchData = async () => {
       try {
         const db = getFirestore();
-        const colRef = collection(db, 'Reservations'); // Replace with your collection name
+        const colRef = collection(db, 'Reservations');
 
         const querySnapshot = await getDocs(colRef);
         const data = [];
@@ -41,169 +41,182 @@ function Reservations() {
 
         setReservationsData(data);
 
-      // Find a reservation matching the user's email and set the restaurant name
-      const userReservation = data.find((reservation) => reservation.email === user.email);
-      if (userReservation) {
-        setRestaurantName(userReservation.rname);
+        // Find a reservation matching the user's email and set the restaurant name
+        const userReservation = data.find((reservation) => reservation.email === user.email);
+        if (userReservation) {
+          setRestaurantName(userReservation.rname);
+        }
+      } catch (error) {
+        console.error('Error fetching data:', error);
       }
-    } catch (error) {
-      console.error('Error fetching data:', error);
-    }
-  };
+    };
 
-  fetchData();
-}, [user.email]);
+    fetchData();
+  }, [user.email]);
 
-useEffect(() => {
-  const determineFilteredReservations = () => {
-    const currentDate = new Date();
-    const filteredReservations = reservationsData.filter((reservation) => {
-      const reservationDate = new Date(reservation.date);
+  useEffect(() => {
+    const determineFilteredReservations = () => {
+      const currentDate = new Date();
+      const filteredReservations = reservationsData.filter((reservation) => {
+        const reservationDate = new Date(reservation.date);
 
-      if (selectedTab === 'today') {
-        return (
+        if (selectedTab === 'today') {
+          return (
+            reservationDate.getDate() === currentDate.getDate() &&
+            reservationDate.getMonth() === currentDate.getMonth() &&
+            reservationDate.getFullYear() === currentDate.getFullYear()
+          );
+        } else if (selectedTab === 'week') {
+          const today = new Date();
+          const firstDayOfWeek = new Date(today.setDate(today.getDate() - today.getDay()));
+          const lastDayOfWeek = new Date(firstDayOfWeek);
+          lastDayOfWeek.setDate(lastDayOfWeek.getDate() + 6);
+
+          return reservationDate >= firstDayOfWeek && reservationDate <= lastDayOfWeek;
+        } else if (selectedTab === 'month') {
+          return (
+            reservationDate.getMonth() === currentDate.getMonth() &&
+            reservationDate.getFullYear() === currentDate.getFullYear()
+          );
+        }
+        return true; // For 'all' tab or default case
+      });
+
+      filteredReservations.sort((a, b) => {
+        const dateA = new Date(`${a.date} ${a.time}`);
+        const dateB = new Date(`${b.date} ${b.time}`);
+        return dateB - dateA;
+      });
+
+      const statuses = filteredReservations.map((reservation) => {
+        const reservationDate = new Date(reservation.date);
+        const reservationTime = new Date(`${reservation.date} ${reservation.time}`);
+        const oneHourLater = new Date(reservationTime.getTime() + 60 * 60 * 1000);
+
+        if (reservationDate > currentDate || oneHourLater > currentDate) {
+          return '🟢';
+        } else if (
           reservationDate.getDate() === currentDate.getDate() &&
           reservationDate.getMonth() === currentDate.getMonth() &&
           reservationDate.getFullYear() === currentDate.getFullYear()
-        );
-      } else if (selectedTab === 'week') {
-        const today = new Date();
-        const firstDayOfWeek = new Date(today.setDate(today.getDate() - today.getDay()));
-        const lastDayOfWeek = new Date(firstDayOfWeek);
-        lastDayOfWeek.setDate(lastDayOfWeek.getDate() + 6);
+        ) {
+          return '🟡';
+        } else {
+          return '🔴';
+        }
+      });
 
-        return reservationDate >= firstDayOfWeek && reservationDate <= lastDayOfWeek;
-      } else if (selectedTab === 'month') {
-        return (
-          reservationDate.getMonth() === currentDate.getMonth() &&
-          reservationDate.getFullYear() === currentDate.getFullYear()
-        );
-      }
-      return true; // For 'all' tab or default case
-    });
+      setStatus(statuses);
+      setDisplayedReservations(filteredReservations);
+    };
 
-    filteredReservations.sort((a, b) => {
-      const dateA = new Date(`${a.date} ${a.time}`);
-      const dateB = new Date(`${b.date} ${b.time}`);
-      return dateB - dateA;
-    });
+    determineFilteredReservations();
+  }, [reservationsData, selectedTab]);
 
-    const statuses = filteredReservations.map((reservation) => {
-      const reservationDate = new Date(reservation.date);
-      const reservationTime = new Date(`${reservation.date} ${reservation.time}`);
-      const oneHourLater = new Date(reservationTime.getTime() + 60 * 60 * 1000);
+  const filteredReservations = displayedReservations.filter(
+    (reservation) => reservation.email === user.email
+  );
 
-      if (reservationDate > currentDate || oneHourLater > currentDate) {
-        return '🟢';
-      } else if (
-        reservationDate.getDate() === currentDate.getDate() &&
-        reservationDate.getMonth() === currentDate.getMonth() &&
-        reservationDate.getFullYear() === currentDate.getFullYear()
-      ) {
-        return '🟡';
-      } else {
-        return '🔴';
-      }
-    });
+  return (
+    <main className='reservationsmain'>
+      {/* Section for radio buttons to select tab */}
+      <section className='info-reservations'>
+        {/* Radio button for 'Today' */}
+        <input
+          type="radio"
+          id="todaycheck"
+          name="info-tabs"
+          value="today"
+          checked={selectedTab === 'today'}
+          onChange={() => handleTabChange('today')}
+        />
+        <label htmlFor="todaycheck">Today</label>
 
-    setStatus(statuses);
-    setDisplayedReservations(filteredReservations);
-  };
+        {/* Radio button for 'This Week' */}
+        <input
+          type="radio"
+          id="weekcheck"
+          name="info-tabs"
+          value="week"
+          checked={selectedTab === 'week'}
+          onChange={() => handleTabChange('week')}
+        />
+        <label htmlFor="weekcheck">This Week</label>
 
-  determineFilteredReservations();
-}, [reservationsData, selectedTab]);
+        {/* Radio button for 'This Month' */}
+        <input
+          type="radio"
+          id="monthcheck"
+          name="info-tabs"
+          value="month"
+          checked={selectedTab === 'month'}
+          onChange={() => handleTabChange('month')}
+        />
+        <label htmlFor="monthcheck">This Month</label>
 
-const filteredReservations = displayedReservations.filter(
-  (reservation) => reservation.email === user.email
-);
+        {/* Radio button for 'All Bookings' */}
+        <input
+          type="radio"
+          id="allcheck"
+          name="info-tabs"
+          value="all"
+          checked={selectedTab === 'all'}
+          onChange={() => handleTabChange('all')}
+        />
+        <label htmlFor="allcheck">All Bookings</label>
+      </section>
 
-return (
-  <main className='reservationsmain'>
-    <h1>{restaurantName}</h1>
-    <section className='info-reservations'>
-      <input
-        type="radio"
-        id="todaycheck"
-        name="info-tabs"
-        value="today"
-        checked={selectedTab === 'today'}
-        onChange={() => handleTabChange('today')}
-      />
-      <label htmlFor="todaycheck">Today</label>
-      <input
-        type="radio"
-        id="weekcheck"
-        name="info-tabs"
-        value="week"
-        checked={selectedTab === 'week'}
-        onChange={() => handleTabChange('week')}
-      />
-      <label htmlFor="weekcheck">This Week</label>
-      <input
-        type="radio"
-        id="monthcheck"
-        name="info-tabs"
-        value="month"
-        checked={selectedTab === 'month'}
-        onChange={() => handleTabChange('month')}
-      />
-      <label htmlFor="monthcheck">This Month</label>
-      <input
-        type="radio"
-        id="allcheck"
-        name="info-tabs"
-        value="all"
-        checked={selectedTab === 'all'}
-        onChange={() => handleTabChange('all')}
-      />
-      <label htmlFor="allcheck">All Reservations</label>
-    </section>
-    <section className='info-reservation-container'>
-      <table>
-        <thead>
-          <tr>
-            <th>Name <hr /></th>
-            <th>Date <hr /></th>
-            <th>Time <hr /></th>
-            <th>Number of Guests <hr /></th>
-            <th>Phone Number <hr /></th>
-            <th>Status <hr /></th>
-          </tr>
-        </thead>
-        <tbody>
-          {filteredReservations.map((reservation, index) => (
-            <React.Fragment key={index}>
-              <tr className='primary-details'>
-                <td className='username'>{reservation.username}</td>
-                <td>{formatDateToDDMMYYYY(reservation.date)}</td>
-                <td>{reservation.time}</td>
-                <td>{reservation.diners}</td>
-                <td>{reservation.phone}</td>
-                <td>
-                  <p>{status[index]}</p>
-                </td>
-              </tr>
-              <tr className='more-details'>
-                <th>Date of Booking:</th>
-                <td>{formatDateToDDMMYYYY(reservation.currentdate)}</td>
-                <th>Amount Paid:</th>
-                <td>{reservation.price}</td>
-                <th>Special Request:</th>
-                <td className='specialsreq'>{reservation.special || 'No special requests'}</td>
-              </tr>
-              <tr>
-                <td colSpan={6}>
-                  <hr />
-                </td>
-              </tr>
-            </React.Fragment>
-          ))}
-        </tbody>
-      </table>
-    </section>
-  </main>
-)
-
+      {/* Section to display reservation details in a table */}
+      <section className='info-reservation-container'>
+        <table>
+          <thead>
+            {/* Table headers */}
+            <tr>
+              <th>Restaurant Name <hr /></th>
+              <th>Date <hr /></th>
+              <th>Time <hr /></th>
+              <th>Number of Guests <hr /></th>
+              <th>Phone Number <hr /></th>
+              <th>Status <hr /></th>
+            </tr>
+          </thead>
+          <tbody>
+            {/* Mapping through displayed reservations to render details */}
+            {displayedReservations.map((booking, index) => (
+              <React.Fragment key={index}>
+                {/* Primary details row */}
+                <tr className='primary-details'>
+                  <td className='username'>{booking.rname}</td>
+                  <td>{formatDateToDDMMYYYY(booking.date)}</td>
+                  <td>{booking.time}</td>
+                  <td>{booking.diners} Guests</td>
+                  <td>{booking.phone}</td>
+                  <td>
+                    <span>{status[index]}</span>
+                  </td>
+                </tr>
+                {/* More details row */}
+                <tr className='more-details'>
+                  <th>Date of Booking:</th>
+                  <td>{formatDateToDDMMYYYY(booking.currentdate)}</td>
+                  <th>Amount Paid:</th>
+                  <td>{booking.price}</td>
+                  <th>Special Request:</th>
+                  <td className='specialsreq'>{booking.special || 'No special requests'}</td>
+                </tr>
+                {/* Divider */}
+                <tr>
+                  <td colSpan={6}>
+                    <hr />
+                  </td>
+                </tr>
+              </React.Fragment>
+            ))}
+          </tbody>
+        </table>
+      </section>
+    </main>
+  )
 }
 
 export default Reservations

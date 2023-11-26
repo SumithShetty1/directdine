@@ -1,6 +1,7 @@
 import React from 'react';
 import '../styles/Footer.css'
 
+// Footer component displaying contact information and copyright
 export default function Footer() {
     return (
         <footer>

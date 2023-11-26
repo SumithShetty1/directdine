@@ -109,8 +109,9 @@ function MyBookings() {
 
   return (
     <main className='reservationsmain'>
-      <h1>My Bookings</h1>
+      {/* Section for radio buttons to select tab */}
       <section className='info-reservations'>
+        {/* Radio button for 'Today' */}
         <input
           type="radio"
           id="todaycheck"
@@ -120,6 +121,8 @@ function MyBookings() {
           onChange={() => handleTabChange('today')}
         />
         <label htmlFor="todaycheck">Today</label>
+
+        {/* Radio button for 'This Week' */}
         <input
           type="radio"
           id="weekcheck"
@@ -129,6 +132,8 @@ function MyBookings() {
           onChange={() => handleTabChange('week')}
         />
         <label htmlFor="weekcheck">This Week</label>
+
+        {/* Radio button for 'This Month' */}
         <input
           type="radio"
           id="monthcheck"
@@ -138,6 +143,8 @@ function MyBookings() {
           onChange={() => handleTabChange('month')}
         />
         <label htmlFor="monthcheck">This Month</label>
+
+        {/* Radio button for 'All Bookings' */}
         <input
           type="radio"
           id="allcheck"
@@ -148,9 +155,12 @@ function MyBookings() {
         />
         <label htmlFor="allcheck">All Bookings</label>
       </section>
+
+      {/* Section to display reservation details in a table */}
       <section className='info-reservation-container'>
         <table>
           <thead>
+            {/* Table headers */}
             <tr>
               <th>Restaurant Name <hr /></th>
               <th>Date <hr /></th>
@@ -161,8 +171,10 @@ function MyBookings() {
             </tr>
           </thead>
           <tbody>
+            {/* Mapping through displayed reservations to render details */}
             {displayedReservations.map((booking, index) => (
               <React.Fragment key={index}>
+                {/* Primary details row */}
                 <tr className='primary-details'>
                   <td className='username'>{booking.rname}</td>
                   <td>{formatDateToDDMMYYYY(booking.date)}</td>
@@ -173,6 +185,7 @@ function MyBookings() {
                     <span>{status[index]}</span>
                   </td>
                 </tr>
+                {/* More details row */}
                 <tr className='more-details'>
                   <th>Date of Booking:</th>
                   <td>{formatDateToDDMMYYYY(booking.currentdate)}</td>
@@ -181,6 +194,7 @@ function MyBookings() {
                   <th>Special Request:</th>
                   <td className='specialsreq'>{booking.special || 'No special requests'}</td>
                 </tr>
+                {/* Divider */}
                 <tr>
                   <td colSpan={6}>
                     <hr />
