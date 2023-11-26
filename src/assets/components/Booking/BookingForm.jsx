@@ -4,6 +4,7 @@ import { UserAuth } from '../../../context/AuthContext';
 import { getFirestore, collection, query, where, getDocs } from 'firebase/firestore';
 
 function BookingForm({ currentRestaurant }) {
+    // Navigation hook for redirecting after form submission
     const navigate = useNavigate();
 
     // Retrieving user details from authentication context
@@ -20,7 +21,7 @@ function BookingForm({ currentRestaurant }) {
     const max_guests = currentRestaurant?.Maximum_Guests;
     const email = currentRestaurant?.Email_Address;
 
-    // State for various form fields
+    // State for various form fields and options
     const [date, setDate] = useState(getDefaultDate());
     const [diners, setDiners] = useState(1);
     const [phone, setPhone] = useState('');
@@ -56,11 +57,13 @@ function BookingForm({ currentRestaurant }) {
     // Function to fetch reserved times for a selected date
     const fetchReservedTimes = async (selectedDate) => {
         try {
+            // Fetch reservations from Firestore based on date and email
             const db = getFirestore();
             const reservationsRef = collection(db, 'Reservations');
             const dateQuery = query(reservationsRef, where('date', '==', selectedDate), where('email', '==', email));
             const querySnapshot = await getDocs(dateQuery);
 
+            // Process fetched reservations
             let bookedTimes = new Set();
             const bookedTimesObject = {};
 
@@ -75,6 +78,7 @@ function BookingForm({ currentRestaurant }) {
                 }
             });
 
+            // Generate available time slots based on opening, closing times, and booked slots
             const startTime = new Date(`01/01/2023 ${opening}`);
             const endTime = new Date(`01/02/2023 ${closing}`);
             const initialTimeOptions = [];
@@ -105,23 +109,16 @@ function BookingForm({ currentRestaurant }) {
                 }
             }
 
+            // Filter available time options based on excluded slots
             const filteredTimeOptions = initialTimeOptions.filter(option => !excludedTimeSlots.has(option));
             setTimeOptions(filteredTimeOptions);
 
-            // Calculate the remaining available guest slots
+            // Calculate remaining available guest slots and update options dynamically
             const remainingGuests = max_guests - (bookedTimesObject[time] || 0);
-
-            // Generate guest options dynamically based on remaining available guest slots
-            const updatedGuestOptions = [];
             const guestsToDisplay = remainingGuests > 0 ? remainingGuests : max_guests;
 
-            for (let i = 1; i <= guestsToDisplay; i++) {
-                updatedGuestOptions.push(i);
-            }
-
-            // Update guestOptions state with the dynamically generated options
+            const updatedGuestOptions = Array.from({ length: guestsToDisplay }, (_, i) => i + 1);
             setGuestOptions(updatedGuestOptions);
-
         } catch (error) {
             console.error('Error fetching reserved times:', error);
         }
@@ -209,7 +206,7 @@ function BookingForm({ currentRestaurant }) {
         setDiners(selectedDiners);
 
         const basePrice = currentRestaurant?.Booking_Price;
-        const pricePerGuest = basePrice / 2; // Assuming initial price is for 2 guests
+        const pricePerGuest = basePrice / 2;
         const calculatedPrice = selectedDiners <= 2 ? basePrice : pricePerGuest * selectedDiners;
         setPrice(calculatedPrice);
     };
@@ -243,8 +240,10 @@ function BookingForm({ currentRestaurant }) {
     return (
         <section className='bookingform'>
             <form onSubmit={handleSubmit}>
+                {/* Reservation form */}
                 <h3>Reserve Your Table</h3>
                 <div className='formcontainer'>
+                    {/* Date selection */}
                     <label htmlFor="date">Choose date</label>
                     <input
                         type="date"
@@ -257,6 +256,8 @@ function BookingForm({ currentRestaurant }) {
                         aria-label="Select a date for your reservation"
                         required
                     />
+
+                    {/* Time selection */}
                     <label htmlFor="time">Choose time</label>
                     <select
                         id="time"
@@ -266,6 +267,7 @@ function BookingForm({ currentRestaurant }) {
                         aria-label="Select a time for your reservation"
                         required
                     >
+                        {/* Display available time slots or message if all slots are booked */}
                         {timeOptions.length <= 1 ? (
                             <option disabled value="">
                                 All time slots are booked for this date
@@ -278,6 +280,8 @@ function BookingForm({ currentRestaurant }) {
                             ))
                         )}
                     </select>
+
+                    {/* Number of diners selection */}
                     <label htmlFor="diners">Number of Diners</label>
                     <select
                         id="diners"
@@ -287,12 +291,15 @@ function BookingForm({ currentRestaurant }) {
                         aria-label="Select Number of Diners"
                         required
                     >
+                        {/* Display options for the number of guests */}
                         {guestOptions.map((option, index) => (
                             <option key={index} value={option}>
                                 {`${option} Guest${option > 1 ? 's' : ''}`}
                             </option>
                         ))}
                     </select>
+
+                    {/* Phone number input */}
                     <label htmlFor="phone">Phone Number</label>
                     <input
                         type="tel"
@@ -305,6 +312,8 @@ function BookingForm({ currentRestaurant }) {
                         pattern="[0-9]{10}"
                         required
                     />
+
+                    {/* Special requests textarea */}
                     <label htmlFor="special">Special Requests <span className='optional'>(optional)</span></label>
                     <textarea
                         id="special"
@@ -314,6 +323,8 @@ function BookingForm({ currentRestaurant }) {
                         placeholder='Comment'
                         aria-label="Enter your special request"
                     />
+
+                    {/* Submit button for making the reservation */}
                     <input
                         type="submit"
                         value="Make your Reservation"

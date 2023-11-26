@@ -13,13 +13,19 @@ import Reservations from './assets/pages/Reservations';
 import { AuthContextProvider } from './context/AuthContext';
 
 function App() {
+  // State to manage selected location
   const [selectedLocation, setSelectedLocation] = useState('Moodbidri');
 
   return (
     <div className='container'>
+      {/* Providing authentication context to components */}
       <AuthContextProvider>
+        {/* Header component */}
         <Header selectedLocation={selectedLocation} setSelectedLocation={setSelectedLocation} />
+
+        {/* Routing setup */}
         <Routes>
+          {/* Routes for different pages */}
           <Route path="/" element={<Home selectedLocation={selectedLocation} />} />
           <Route path="/mybookings" element={<MyBookings />} />
           <Route path="/reservations" element={<Reservations />} />
@@ -28,6 +34,8 @@ function App() {
           <Route path="/confirmation" element={<Confirmation />} />
           <Route path="/confirmed" element={<Confirmed />} />
         </Routes>
+
+        {/* Footer component */}
         <Footer />
       </AuthContextProvider>
     </div>

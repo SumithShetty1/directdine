@@ -3,7 +3,7 @@ import { Link, useLocation } from 'react-router-dom';
 import '../styles/Confirmed.css'
 import confirmed from '../images/confirmed.png'
 
-
+// Function to format ISO date to DD-MM-YYYY
 function formatISODateToDDMMYYYY(isoDate) {
     const date = new Date(isoDate);
     const day = date.getDate();
@@ -13,6 +13,7 @@ function formatISODateToDDMMYYYY(isoDate) {
 }
 
 function Confirmed() {
+    // Get data passed from the previous location
     const location = useLocation();
     const {
         username,
@@ -25,6 +26,7 @@ function Confirmed() {
         special,
     } = location.state || {};
 
+    // Format the date to DD-MM-YYYY
     const formattedDate = formatISODateToDDMMYYYY(date);
 
     return (
@@ -39,6 +41,7 @@ function Confirmed() {
                 <h2>Your table has been reserved for the following details:</h2>
                 <div className='confirmed-details'>
                     <div>
+                        {/* Details of the reservation */}
                         <span className='details'>
                             <p>
                                 <strong>Restaurant Name</strong>
@@ -97,6 +100,7 @@ function Confirmed() {
                         </span>
                     </div>
                 </div>
+                {/* Thank you message and back button */}
                 <h2>Thank you for choosing our restaurant. We look forward to serving you!</h2>
                 <div className='back-link'>
                     <Link to='/'>

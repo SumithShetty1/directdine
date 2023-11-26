@@ -18,10 +18,12 @@ const formatDate = (date) => {
 function Review({ currentRestaurant }) {
     const { user } = UserAuth();
 
+    // State for rating and review
     const overallrating = currentRestaurant.Ratings;
     const [rating, setRating] = useState(0);
     const [review, setReview] = useState('');
 
+    // Function to handle rating change
     const handleRatingChange = (newRating) => {
         if (newRating === rating) {
             // If the same star is clicked again, reset the rating to 0
@@ -32,6 +34,7 @@ function Review({ currentRestaurant }) {
         }
     };
 
+    // Function to handle form submission
     const handleSubmit = async (e) => {
         e.preventDefault();
 
@@ -89,10 +92,12 @@ function Review({ currentRestaurant }) {
         }
     };
 
+    // State for reviews and show/hide logic
     const [reviews, setReviews] = useState([]);
     const [showMore, setShowMore] = useState(false);
     const [visibleReviews, setVisibleReviews] = useState(3); // Initial number of reviews to display
 
+    // Effect to fetch reviews based on restaurant email
     useEffect(() => {
         const fetchReviews = async () => {
             try {
@@ -118,6 +123,7 @@ function Review({ currentRestaurant }) {
         }
     }, [currentRestaurant]);
 
+    // Function to toggle reviews visibility
     const toggleReviews = () => {
         setShowMore(!showMore);
         setVisibleReviews(showMore ? 3 : reviews.length);
@@ -126,17 +132,21 @@ function Review({ currentRestaurant }) {
     return (
         <section className='reviews'>
             <section className='reviewsheader'>
+                {/* Overall Ratings Section */}
                 <section className='overallratings'>
                     <h1>{overallrating}</h1>
+                    {/* Displaying Overall Ratings with Stars */}
                     <div className='rating-stars overallratingstars'>
                         {[1, 2, 3, 4, 5].map((starNumber) => (
                             <React.Fragment key={starNumber}>
+                                {/* Checkbox to display filled/unfilled stars based on overall rating */}
                                 <input
                                     type="checkbox"
                                     id={`overallstar${starNumber}`}
                                     checked={overallrating >= starNumber}
                                     disabled
                                 />
+                                {/* Star Icons */}
                                 <label htmlFor={`overallstar${starNumber}`} className={`star${starNumber}`}>
                                     <img
                                         src={starnotfilled}
@@ -154,8 +164,11 @@ function Review({ currentRestaurant }) {
                     </div>
                 </section>
                 <hr />
+                {/* Reviews Section */}
                 <section className='reviews-section'>
+                    {/* User Review Form */}
                     <div className='review-profile'>
+                        {/* Display User Profile (if available) */}
                         {user && user.photoURL && (
                             <img src={user.photoURL} alt="" />
                         )}
@@ -163,15 +176,18 @@ function Review({ currentRestaurant }) {
                             <h3>{user.displayName}</h3>
                         )}
                     </div>
+                    {/* User Rating Input */}
                     <div className='rating-stars'>
                         {[1, 2, 3, 4, 5].map((starNumber) => (
                             <React.Fragment key={starNumber}>
+                                {/* Checkbox to select user rating */}
                                 <input
                                     type="checkbox"
                                     id={`star${starNumber}`}
                                     checked={rating >= starNumber}
                                     onChange={() => handleRatingChange(starNumber)}
                                 />
+                                {/* Star Icons */}
                                 <label htmlFor={`star${starNumber}`} className={`star${starNumber}`}>
                                     <img
                                         src={starnotfilled}
@@ -187,6 +203,7 @@ function Review({ currentRestaurant }) {
                             </React.Fragment>
                         ))}
                     </div>
+                    {/* Form for Posting Reviews */}
                     <form onSubmit={handleSubmit}>
                         <textarea
                             id="review"
@@ -201,27 +218,35 @@ function Review({ currentRestaurant }) {
                     </form>
                 </section>
             </section>
+            {/* Container for Displaying Reviews */}
             <section className='reviewcontainer'>
                 <hr />
+                {/* Displaying Reviews */}
                 {reviews.slice(0, visibleReviews).map((review, index) => (
                     <div key={index} className='customer-reviews'>
+                        {/* User Profile and Posted Date */}
                         <div className='reviewed-profile'>
                             <img src={review.profileUrl} alt="" />
                             <p>{review.name}</p>
                             <p className='post-date'>{formatDate(review.currentDate)}</p>
                         </div>
+                        {/* User Ratings */}
                         <div className='reviewed-ratings'>
                             <img src={starfilled} alt="" />
                             <p>{review.rating}</p>
                         </div>
+                        {/* User Comments/Review */}
                         <p>{review.comments}</p>
                     </div>
                 ))}
+                {/* 'See More' Section */}
                 {reviews.length > 3 && (
                     <div className='seemore'>
                         <label htmlFor='seemore' onClick={toggleReviews}>
                             <span className='downarrow'>
+                                {/* Toggle for 'See More' or 'See Less' */}
                                 <p>{showMore ? 'See less' : 'See more'}</p>
+                                {/* Arrow Icon for Indicating Expand/Collapse */}
                                 <img src={showMore ? uparrow : downarrow} alt="" />
                             </span>
                         </label>

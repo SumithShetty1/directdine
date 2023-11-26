@@ -3,8 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import { getDocs, collection, getFirestore, updateDoc, doc } from 'firebase/firestore';
 
 function Recommend({ selectedLocation }) {
-    const [restaurantData, setRestaurantData] = useState([]);
-    const navigate = useNavigate();
+    const [restaurantData, setRestaurantData] = useState([]); // State to store restaurant data
+    const navigate = useNavigate(); // Navigation hook from React Router
 
     useEffect(() => {
         const db = getFirestore();
@@ -15,7 +15,9 @@ function Recommend({ selectedLocation }) {
                 const restaurants = [];
                 snapshot.docs.forEach((doc) => {
                     const data = doc.data();
+                    // Collect restaurant data and push it into an array
                     restaurants.push({
+                        // Store necessary restaurant details
                         id: doc.id,
                         booking_price: data.Booking_Price,
                         city: data.City,
@@ -42,7 +44,7 @@ function Recommend({ selectedLocation }) {
                 // Sort the filtered restaurants by ratings (descending order)
                 filteredRestaurants.sort((a, b) => b.ratings - a.ratings);
 
-                setRestaurantData(filteredRestaurants);
+                setRestaurantData(filteredRestaurants); // Set the filtered and sorted restaurant data
             })
             .catch((error) => {
                 console.log(error.message);
@@ -54,6 +56,7 @@ function Recommend({ selectedLocation }) {
         const currentDetailsDocRef = doc(db, 'Current Details', 'MbYytZaUjmmn7B0fkrTU');
 
         const updateData = {
+            // Update the data to be stored in 'Current Details'
             id: restaurant.id,
             Booking_Price: restaurant.booking_price,
             City: restaurant.city,
@@ -75,10 +78,10 @@ function Recommend({ selectedLocation }) {
         };
 
         try {
-            await updateDoc(currentDetailsDocRef, updateData);
+            await updateDoc(currentDetailsDocRef, updateData); // Update document in Firestore
             console.log('Data updated successfully.');
 
-            // After updating, navigate to the '/booking' page
+            // Navigate to the '/booking' page after updating data
             navigate('/booking');
         } catch (error) {
             console.error('Error updating data:', error);
@@ -86,6 +89,7 @@ function Recommend({ selectedLocation }) {
     };
 
     const handleSeeAllClick = () => {
+        // Navigate to '/restaurants' page to see all recommended restaurants
         if (restaurantData && restaurantData.length > 0) {
             navigate('/restaurants', { state: { sectionTitle: 'Recommended restaurants in ' + selectedLocation } });
         } else {
@@ -96,17 +100,25 @@ function Recommend({ selectedLocation }) {
     return (
         <section className='recommend'>
             <div className='recommend-header'>
+                {/* Display the title with the selected location */}
                 <h1>Recommended restaurants in {selectedLocation}</h1>
+                {/* Allow users to see all recommended restaurants */}
                 <span className='link' onClick={handleSeeAllClick}>See All</span>
             </div>
             <div className='recommend-container'>
+                {/* Display top four highly-rated restaurants */}
                 {restaurantData
                     .slice(0, 4) // Display only the top four highly-rated restaurants
                     .map((restaurant, index) => (
+                        // Display each restaurant with its details
                         <article className="restaurant" key={index} onClick={() => handleRestaurantClick(restaurant)}>
+                            {/* Restaurant ratings */}
                             <div className="ratings">{restaurant.ratings}</div>
+                            {/* Restaurant image */}
                             <img src={restaurant.restaurant_image} alt='Restaurant' />
+                            {/* Restaurant name */}
                             <h3>{restaurant.name}</h3>
+                            {/* Restaurant city */}
                             <p>{restaurant.city}</p>
                         </article>
                     ))}

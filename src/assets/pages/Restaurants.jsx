@@ -8,7 +8,6 @@ import minusicon from "../images/minus-icon.png";
 import plusicon from "../images/plus-icon.png";
 
 function Restaurants({ selectedLocation }) {
-  const [restaurantData, setRestaurantData] = useState([]);
   const [displayedData, setDisplayedData] = useState([]);
   const navigate = useNavigate();
   const location = useLocation();
@@ -62,13 +61,13 @@ function Restaurants({ selectedLocation }) {
         displayData = applySort(displayData);
 
         setDisplayedData(displayData);
-        setRestaurantData(filteredRestaurants);
       })
       .catch((error) => {
         console.log(error.message);
       });
   }, [selectedLocation]);
 
+  // Function to filter restaurants based on checkbox options
   const applyFilters = (data) => {
     let filteredRestaurants = [...data];
 
@@ -92,6 +91,7 @@ function Restaurants({ selectedLocation }) {
     return filteredRestaurants;
   };
 
+  // Function to sort restaurants based on selected option
   const applySort = (data) => {
     let sortedRestaurants = [...data];
     if (sortOption === 'popularity') {
@@ -103,6 +103,7 @@ function Restaurants({ selectedLocation }) {
     return sortedRestaurants;
   };
 
+  // Function to handle clicks on restaurant items
   const handleRestaurantClick = async (restaurant) => {
     const db = getFirestore();
     const currentDetailsDocRef = doc(db, 'Current Details', 'MbYytZaUjmmn7B0fkrTU');
@@ -139,6 +140,7 @@ function Restaurants({ selectedLocation }) {
     }
   };
 
+  // Function to handle checkbox changes
   const handleCheckboxChange = (event) => {
     const { name, checked } = event.target;
     setFilterOptions({ ...filterOptions, [name]: checked });
@@ -146,15 +148,20 @@ function Restaurants({ selectedLocation }) {
 
   return (
     <main className='restaurantspage'>
+      {/* Sidebar for quick filters */}
       <aside className='filter'>
         <h3>Quick Filters</h3>
+        {/* Toggle button for the filter options */}
         <input type="checkbox" id="check" />
         <label htmlFor="check" className="checkbtn">
+          {/* Icons for collapsing/expanding the filter options */}
           <img src={plusicon} alt='' className='plusicon' />
           <img src={minusicon} alt='' className='minusicon' />
         </label>
+        {/* Filter options for pure veg and veg/non-veg */}
         <div className='filter-options'>
           <div>
+            {/* Checkbox for selecting pure veg option */}
             <input
               type="checkbox"
               name="pureVeg"
@@ -165,6 +172,7 @@ function Restaurants({ selectedLocation }) {
             <label htmlFor='pureveg'>Pure Veg</label>
           </div>
           <div>
+            {/* Checkbox for selecting veg and non-veg option */}
             <input
               type="checkbox"
               name="vegAndNonVeg"
@@ -176,27 +184,37 @@ function Restaurants({ selectedLocation }) {
           </div>
         </div>
       </aside>
+
+      {/* Section displaying recommended restaurants */}
       <section className='recommended'>
         <div className='recommended-header'>
+          {/* Title of the section */}
           <h1>{sectionTitle}</h1>
+          {/* Dropdown for sorting options */}
           <div className='sort-container'>
             <label htmlFor="sort">Sort By</label>
             <select id='sort' value={sortOption} onChange={(e) => setSortOption(e.target.value)}>
+              {/* Sorting options */}
               <option value="ratings">Ratings</option>
               <option value="popularity">Popularity</option>
             </select>
           </div>
         </div>
+
+        {/* Container for displaying restaurant cards */}
         <div className='recommended-container'>
           {displayedData && displayedData.length > 0 ? (
+            // Displaying individual restaurant cards
             displayedData.map((restaurant, index) => (
               <section className="restaurant-lists" key={index} onClick={() => handleRestaurantClick(restaurant)}>
+                {/* Restaurant details */}
                 <div className="restaurant-ratings">{restaurant.ratings}</div>
                 <img src={restaurant.restaurant_image} alt='Restaurant' />
                 <div className='restaurant-details'>
                   <h2>{restaurant.name}</h2>
                   <p className='location'>{restaurant.city}</p>
                   <p>&#8377; {restaurant.booking_price} for 2 approx</p>
+                  {/* Popularity section */}
                   <div className='popularity'>
                     <img src={popularityicon} alt='' />
                     <span>{restaurant.popularity}</span>
@@ -205,6 +223,7 @@ function Restaurants({ selectedLocation }) {
               </section>
             ))
           ) : (
+            // Displayed when no restaurant data is available
             <p>No restaurant data available</p>
           )}
         </div>
