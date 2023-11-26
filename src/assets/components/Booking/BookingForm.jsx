@@ -27,6 +27,7 @@ function BookingForm({ currentRestaurant }) {
     const [special, setSpecial] = useState('');
     const [timeOptions, setTimeOptions] = useState([]);
     const [time, setTime] = useState(timeOptions.length > 0 ? timeOptions[0] : '');
+    const [guestOptions, setGuestOptions] = useState([]);
 
     // Utility function to get the default date for the date input field
     function getDefaultDate() {
@@ -61,46 +62,70 @@ function BookingForm({ currentRestaurant }) {
             const querySnapshot = await getDocs(dateQuery);
 
             let bookedTimes = new Set();
+            const bookedTimesObject = {};
+
             querySnapshot.forEach((doc) => {
-                bookedTimes.add(doc.data().time);
+                const diners = doc.data().diners;
+                const bookedTime = doc.data().time;
+                bookedTimes.add(bookedTime);
+                if (!bookedTimesObject[bookedTime]) {
+                    bookedTimesObject[bookedTime] = diners;
+                } else {
+                    bookedTimesObject[bookedTime] += diners;
+                }
             });
 
             const startTime = new Date(`01/01/2023 ${opening}`);
             const endTime = new Date(`01/02/2023 ${closing}`);
             const initialTimeOptions = [];
+            const excludedTimeSlots = new Set();
 
             while (startTime <= endTime) {
                 const formattedTime = startTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+                const totalDinersBooked = bookedTimesObject[formattedTime] || 0;
 
-                const isBooked = bookedTimes.has(formattedTime);
-                const isNextHourBooked = bookedTimes.has(addHours(startTime, 1));
-                const isPrevHourBooked = bookedTimes.has(subHours(startTime, 1));
+                const isMaxGuestsBooked = totalDinersBooked === max_guests;
 
-                if (!isBooked && !isNextHourBooked && !isPrevHourBooked) {
-                    initialTimeOptions.push(formattedTime);
+                initialTimeOptions.push(formattedTime);
+
+                if (isMaxGuestsBooked) {
+                    excludedTimeSlots.add(formattedTime);
+                    excludedTimeSlots.add(addHours(startTime, 1));
+                    excludedTimeSlots.add(subHours(startTime, 1));
                 }
 
                 startTime.setHours(startTime.getHours() + 1);
 
-                if (startTime.getHours() === 0 && startTime.getMinutes() === 0) {
+                // Check for closing time or midnight
+                const isClosingTime = startTime.getHours() === endTime.getHours();
+                const isMidnight = startTime.getHours() === 0 && startTime.getMinutes() === 0;
+
+                if (isClosingTime || isMidnight) {
                     break;
                 }
             }
 
-            // If a time is already selected, filter out the subsequent time from options
-            if (time) {
-                const selectedIndex = initialTimeOptions.indexOf(time);
-                if (selectedIndex !== -1 && selectedIndex < initialTimeOptions.length - 1) {
-                    initialTimeOptions.splice(selectedIndex + 1, initialTimeOptions.length - selectedIndex - 1);
-                }
+            const filteredTimeOptions = initialTimeOptions.filter(option => !excludedTimeSlots.has(option));
+            setTimeOptions(filteredTimeOptions);
+
+            // Calculate the remaining available guest slots
+            const remainingGuests = max_guests - (bookedTimesObject[time] || 0);
+
+            // Generate guest options dynamically based on remaining available guest slots
+            const updatedGuestOptions = [];
+            const guestsToDisplay = remainingGuests > 0 ? remainingGuests : max_guests;
+
+            for (let i = 1; i <= guestsToDisplay; i++) {
+                updatedGuestOptions.push(i);
             }
 
-            setTimeOptions(initialTimeOptions);
+            // Update guestOptions state with the dynamically generated options
+            setGuestOptions(updatedGuestOptions);
+
         } catch (error) {
             console.error('Error fetching reserved times:', error);
         }
     };
-
 
     // Helper function to add hours to a date
     const addHours = (date, hours) => {
@@ -144,17 +169,39 @@ function BookingForm({ currentRestaurant }) {
         fetchReservedTimes(selectedDate);
     };
 
+    // Function to fetch guest options based on selected time
+    const fetchGuestOptions = (selectedTime) => {
+        // Calculate the remaining available guest slots for the selected time
+        const db = getFirestore();
+        const reservationsRef = collection(db, 'Reservations');
+        const timeQuery = query(reservationsRef, where('date', '==', date), where('email', '==', email), where('time', '==', selectedTime));
+        getDocs(timeQuery)
+            .then((querySnapshot) => {
+                const totalGuestsBooked = querySnapshot.docs.reduce((acc, doc) => acc + doc.data().diners, 0);
+                const remainingGuests = max_guests - totalGuestsBooked;
+                const guestsToDisplay = remainingGuests > 0 ? remainingGuests : max_guests;
+
+                const updatedGuestOptions = [];
+                for (let i = 1; i <= guestsToDisplay; i++) {
+                    updatedGuestOptions.push(i);
+                }
+
+                setGuestOptions(updatedGuestOptions);
+            })
+            .catch((error) => {
+                console.error('Error fetching guest options:', error);
+            });
+    };
+
+    useEffect(() => {
+        fetchGuestOptions(time);
+    }, [time]); // Run once on mount
+
     // Function to handle time change
     const handleTimeChange = (e) => {
         const selectedTime = e.target.value;
         setTime(selectedTime);
     };
-
-    // Generating guest options for the dropdown
-    const guestOptions = [];
-    for (let i = 1; i <= max_guests; i++) {
-        guestOptions.push(i);
-    }
 
     // Function to handle the change in the number of diners
     const handleDinersChange = (e) => {
@@ -189,7 +236,7 @@ function BookingForm({ currentRestaurant }) {
                 diners,
                 phone,
                 special,
-            }
+            },
         });
     };
 
@@ -240,8 +287,8 @@ function BookingForm({ currentRestaurant }) {
                         aria-label="Select Number of Diners"
                         required
                     >
-                        {guestOptions.map((option) => (
-                            <option key={option} value={option}>
+                        {guestOptions.map((option, index) => (
+                            <option key={index} value={option}>
                                 {`${option} Guest${option > 1 ? 's' : ''}`}
                             </option>
                         ))}
