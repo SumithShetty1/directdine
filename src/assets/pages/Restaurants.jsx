@@ -18,6 +18,42 @@ function Restaurants({ selectedLocation }) {
   });
   const [sortOption, setSortOption] = useState('ratings');
 
+  // Function to filter restaurants based on checkbox options
+  const applyFilters = (data) => {
+    let filteredRestaurants = [...data];
+
+    if (filterOptions.pureVeg && filterOptions.vegAndNonVeg) {
+      // Display all data if both checkboxes are checked
+      return filteredRestaurants;
+    }
+
+    if (filterOptions.pureVeg) {
+      filteredRestaurants = filteredRestaurants.filter(
+        (restaurant) => restaurant.restaurant_type === 'Pure Veg'
+      );
+    }
+
+    if (filterOptions.vegAndNonVeg) {
+      filteredRestaurants = filteredRestaurants.filter(
+        (restaurant) => restaurant.restaurant_type === 'Veg and Non Veg'
+      );
+    }
+
+    return filteredRestaurants;
+  };
+
+  // Function to sort restaurants based on selected option
+  const applySort = (data) => {
+    let sortedRestaurants = [...data];
+    if (sortOption === 'popularity') {
+      sortedRestaurants.sort((a, b) => b.popularity - a.popularity);
+    } else {
+      // Sort by default: ratings
+      sortedRestaurants.sort((a, b) => b.ratings - a.ratings);
+    }
+    return sortedRestaurants;
+  };
+
   useEffect(() => {
     const db = getFirestore();
     const colRef = collection(db, 'Restaurants Details');
@@ -65,43 +101,7 @@ function Restaurants({ selectedLocation }) {
       .catch((error) => {
         console.log(error.message);
       });
-  }, [selectedLocation]);
-
-  // Function to filter restaurants based on checkbox options
-  const applyFilters = (data) => {
-    let filteredRestaurants = [...data];
-
-    if (filterOptions.pureVeg && filterOptions.vegAndNonVeg) {
-      // Display all data if both checkboxes are checked
-      return filteredRestaurants;
-    }
-
-    if (filterOptions.pureVeg) {
-      filteredRestaurants = filteredRestaurants.filter(
-        (restaurant) => restaurant.restaurant_type === 'Pure Veg'
-      );
-    }
-
-    if (filterOptions.vegAndNonVeg) {
-      filteredRestaurants = filteredRestaurants.filter(
-        (restaurant) => restaurant.restaurant_type === 'Veg and Non Veg'
-      );
-    }
-
-    return filteredRestaurants;
-  };
-
-  // Function to sort restaurants based on selected option
-  const applySort = (data) => {
-    let sortedRestaurants = [...data];
-    if (sortOption === 'popularity') {
-      sortedRestaurants.sort((a, b) => b.popularity - a.popularity);
-    } else {
-      // Sort by default: ratings
-      sortedRestaurants.sort((a, b) => b.ratings - a.ratings);
-    }
-    return sortedRestaurants;
-  };
+  }, [selectedLocation,applyFilters,applySort]);
 
   // Function to handle clicks on restaurant items
   const handleRestaurantClick = async (restaurant) => {
