@@ -7,13 +7,12 @@ import { getAuth } from "firebase/auth";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: "AIzaSyBLfRzdJCESFNcl_XcIPl6Zu8gf_bdHrvI",
-  authDomain: "directdine-c3744.firebaseapp.com",
-  databaseURL: "https://directdine-c3744-default-rtdb.asia-southeast1.firebasedatabase.app",
-  projectId: "directdine-c3744",
-  storageBucket: "directdine-c3744.appspot.com",
-  messagingSenderId: "541783449057",
-  appId: "1:541783449057:web:21dbded23ce7525a1c06a0"
+  apiKey: "AIzaSyDuUQ1ZUukJ46LzloWdHqRpKIZTVC85IVE",
+  authDomain: "directdine-d4261.firebaseapp.com",
+  projectId: "directdine-d4261",
+  storageBucket: "directdine-d4261.appspot.com",
+  messagingSenderId: "1003236394722",
+  appId: "1:1003236394722:web:5d3743bc4176a8222b00bb"
 };
 
 // Initialize Firebase
