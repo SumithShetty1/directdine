@@ -189,7 +189,7 @@ function Restaurants({ selectedLocation }) {
       <section className='recommended'>
         <div className='recommended-header'>
           {/* Title of the section */}
-          <h1>{sectionTitle}</h1>
+          <h1>Recommended restaurants in {selectedLocation}</h1>
           {/* Dropdown for sorting options */}
           <div className='sort-container'>
             <label htmlFor="sort">Sort By</label>
