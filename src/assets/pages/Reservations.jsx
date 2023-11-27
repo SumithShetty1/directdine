@@ -92,7 +92,6 @@ function Reservations() {
         const reservationDate = new Date(reservation.date);
         const reservationTime = new Date(`${reservation.date} ${reservation.time}`);
         const oneHourLater = new Date(reservationTime.getTime() + 60 * 60 * 1000);
-
         if (reservationDate > currentDate || oneHourLater > currentDate) {
           return '🟢';
         } else if (
@@ -182,7 +181,7 @@ function Reservations() {
           </thead>
           <tbody>
             {/* Mapping through displayed reservations to render details */}
-            {displayedReservations.map((booking, index) => (
+            {filteredReservations.map((booking, index) => (
               <React.Fragment key={index}>
                 {/* Primary details row */}
                 <tr className='primary-details'>
