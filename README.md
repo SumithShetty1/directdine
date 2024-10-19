@@ -1,4 +1,39 @@
-# Getting Started with Create React App
+# DirectDine - Restaurants Table Reservation System
+
+## Overview
+DirectDine is a comprehensive platform designed to facilitate restaurant reservations, allowing users to browse listings, make bookings, and access detailed restaurant information. With features like reviews and map integration, DirectDine transforms the dining experience for both users and restaurant owners.
+
+## Features
+- **Restaurant Listings**: Browse a variety of restaurants with detailed information.
+- **Booking Management**: Effortlessly make and manage table reservations.
+- **User Reviews**: Read and leave reviews to enhance the dining experience.
+- **Map Integration**: Easily locate restaurants with integrated maps.
+- **User Account Management**: Securely log in using Google Authentication.
+
+## Technologies Used
+- **Frontend**: HTML, CSS, JavaScript, React.js
+- **Backend**: Node.js, Firebase
+- **Database**: Firestore
+
+## Getting Started
+To get a local copy up and running, follow these steps:
+
+**1. Clone the repository:**
+   ```bash
+   git clone https://github.com/SumithShetty1/directdine.git
+   ```
+
+**2. Install the required packages:**
+   ```bash
+   npm install
+   ```
+
+**3. Run the application:**
+   ```bash
+   npm start
+   ```
+
+## Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
