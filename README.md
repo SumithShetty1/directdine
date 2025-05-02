@@ -14,6 +14,7 @@ DirectDine is a comprehensive platform designed to facilitate restaurant reserva
 - **Frontend**: HTML, CSS, JavaScript, React.js
 - **Backend**: Node.js, Firebase
 - **Database**: Firestore
+- **Deployment**: Vercel
 
 ## Getting Started
 To get a local copy up and running, follow these steps:
